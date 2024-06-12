@@ -1,7 +1,11 @@
+import 'dart:convert';
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:cupertino_icons/cupertino_icons.dart';
+import 'package:http/http.dart' as http;
 
 void main() {
   runApp(const MyApp());
@@ -38,7 +42,9 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: const Center(
-        child: Text('Hello World'),
+        child: IconButton(
+            onPressed: getPosts,
+            icon: Icon(CupertinoIcons.list_bullet_below_rectangle)),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
@@ -66,5 +72,22 @@ class _MyHomePageState extends State<MyHomePage> {
         type: BottomNavigationBarType.fixed,
       ),
     );
+  }
+}
+
+Future<Map<String, dynamic>> getPosts() async {
+  final url = Uri.https("localhost:8080", "/posts");
+
+  try {
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+      return data;
+    } else {
+      throw Exception('Failed to load posts');
+    }
+  } catch (e) {
+    throw Exception('Failed to load posts');
   }
 }
