@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:cupertino_icons/cupertino_icons.dart';
 
 void main() {
   runApp(const MyApp());
@@ -41,14 +43,27 @@ class _MyHomePageState extends State<MyHomePage> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Icon(CupertinoIcons.home),
             label: "Home",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.search),
+            icon: Icon(CupertinoIcons.search),
             label: "Search",
           ),
+          BottomNavigationBarItem(
+            icon: Icon(CupertinoIcons.add),
+            label: "Post",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(CupertinoIcons.snow),
+            label: "Avi Report",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(CupertinoIcons.profile_circled),
+            label: "User",
+          ),
         ],
+        type: BottomNavigationBarType.fixed,
       ),
     );
   }
