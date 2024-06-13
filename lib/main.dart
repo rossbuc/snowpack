@@ -7,13 +7,12 @@ import 'package:http/http.dart' as http;
 
 void main() => runApp(const ProviderScope(child: MyApp()));
 
-final postSereviceProvider =
+final postServiceProvider =
     StateNotifierProvider<PostService, List<Post>>((ref) => PostService([]));
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -38,7 +37,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _currentIndex = 0;
-  List<Widget> body = const [
+  final List<Widget> body = const [
     Center(
       child: PostList(),
     ),
@@ -55,6 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
       child: Text("User"),
     ),
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -100,31 +100,38 @@ class PostService extends StateNotifier<List<Post>> {
     getPosts().then((value) => state = value);
   }
 
-// Make sure that when you migrate to using a db on Railway you change to https
   Future<List<Post>> getPosts() async {
     final url = Uri.http("localhost:8080", "/posts");
 
-    print("get post called with thiss url: $url");
+    print("get post called with this url: $url");
 
     try {
       final response = await http.get(url);
 
       if (response.statusCode == 200) {
-        var data = jsonDecode(response.body);
-        print(data);
-        List<Post> posts = data.map((json) => Post.fromJson(json)).toList();
+        var data = jsonDecode(response.body) as List;
+        print("Data received: $data");
+        List<Post> posts = data.map((json) {
+          try {
+            return Post.fromJson(json);
+          } catch (e) {
+            print("Error parsing post: $e, data: $json");
+            throw e;
+          }
+        }).toList();
         return posts;
       } else {
         throw Exception('Failed to load posts');
       }
     } catch (e) {
-      print(e);
-      throw Exception('Failed to load posts with error code : $e');
+      print("Exception occurred: $e");
+      throw Exception('Failed to load posts with error code: $e');
     }
   }
 }
 
 class Post {
+  final int id;
   final int xcoordinate;
   final int ycoordinate;
   final String description;
@@ -134,6 +141,7 @@ class Post {
   final User user;
 
   Post({
+    required this.id,
     required this.xcoordinate,
     required this.ycoordinate,
     required this.description,
@@ -144,25 +152,32 @@ class Post {
   });
 
   factory Post.fromJson(Map<String, dynamic> json) {
+    print("Parsing Post from JSON: $json");
     return Post(
-      xcoordinate: json['xcoordinate'],
-      ycoordinate: json['ycoordinate'],
-      description: json['description'],
-      elevation: json['elevation'],
-      aspect: json['aspect'],
-      temperature: json['temperature'],
-      user: User.fromJson(json['user']),
+      id: json['id'] ??
+          (throw Exception(
+              "Post ID is required, post id provided: ${json['id']}")),
+      xcoordinate: json['xcoordinate'] ?? 0,
+      ycoordinate: json['ycoordinate'] ?? 0,
+      description: json['description'] ?? "No description",
+      elevation: json['elevation'] ?? 0,
+      aspect: json['aspect'] ?? "No aspect",
+      temperature: json['temperature'] ?? 0,
+      user:
+          User.fromJson(json['user'] ?? (throw Exception("User is required"))),
     );
   }
 }
 
 class User {
+  final int id;
   final String username;
   final String password;
   final String email;
   final List<Post> posts;
 
   User({
+    required this.id,
     required this.username,
     required this.password,
     required this.email,
@@ -170,12 +185,23 @@ class User {
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
-    var postList = json['posts'] as List;
-    List<Post> posts = postList.map((i) => Post.fromJson(i)).toList();
+    print("Parsing User from JSON: $json");
+    var postList = json['posts'] as List? ?? [];
+    List<Post> posts = postList.map((i) {
+      try {
+        return Post.fromJson(i);
+      } catch (e) {
+        print("Error parsing post in user: $e, data: $i");
+        throw e;
+      }
+    }).toList();
     return User(
-      username: json['username'],
-      password: json['password'],
-      email: json['email'],
+      id: json['id'] ??
+          (throw Exception(
+              "User ID is required, value provided is: ${json['id']}")),
+      username: json['username'] ?? "",
+      password: json['password'] ?? "",
+      email: json['email'] ?? "",
       posts: posts,
     );
   }
@@ -186,12 +212,16 @@ class PostList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final posts = ref.watch(postSereviceProvider);
-    print("this is the list of posts: $posts");
+    final posts = ref.watch(postServiceProvider);
+    print("This is the list of posts: $posts");
     return ListView.builder(
       itemCount: posts.length,
       itemBuilder: (context, index) {
-        return Text(posts[index].description);
+        return ListTile(
+          title: Text(posts[index].description),
+          subtitle: Text(
+              'Coordinates: (${posts[index].xcoordinate}, ${posts[index].ycoordinate})'),
+        );
       },
     );
   }
