@@ -96,7 +96,9 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 class PostService extends StateNotifier<List<Post>> {
-  PostService(super.state);
+  PostService(super.state) {
+    getPosts();
+  }
 
 // Make sure that when you migrate to using a db on Railway you change to https
   Future<List<dynamic>> getPosts() async {
