@@ -1,16 +1,14 @@
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:cupertino_icons/cupertino_icons.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 
-void main() {
-  runApp(const MyApp());
-  print("helo world");
-}
+void main() => runApp(const ProviderScope(child: MyApp()));
+
+final postSereviceProvider =
+    StateNotifierProvider<PostService, List<Post>>((ref) => PostService([]));
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -42,7 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int _currentIndex = 0;
   List<Widget> body = const [
     Center(
-      child: Text("Home"),
+      child: PostList(),
     ),
     Center(
       child: Text("Search"),
@@ -97,24 +95,77 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
+class PostService extends StateNotifier<List<Post>> {
+  PostService(super.state);
+
 // Make sure that when you migrate to using a db on Railway you change to https
-Future<List<dynamic>> getPosts() async {
-  final url = Uri.http("localhost:8080", "/posts");
+  Future<List<dynamic>> getPosts() async {
+    final url = Uri.http("localhost:8080", "/posts");
 
-  print("get post called with thiss url: $url");
+    print("get post called with thiss url: $url");
 
-  try {
-    final response = await http.get(url);
+    try {
+      final response = await http.get(url);
 
-    if (response.statusCode == 200) {
-      var data = jsonDecode(response.body);
-      print(data);
-      return data;
-    } else {
-      throw Exception('Failed to load posts');
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+        print(data);
+        return data;
+      } else {
+        throw Exception('Failed to load posts');
+      }
+    } catch (e) {
+      print(e);
+      throw Exception('Failed to load posts with error code : $e');
     }
-  } catch (e) {
-    print(e);
-    throw Exception('Failed to load posts with error code : $e');
+  }
+}
+
+class Post {
+  final int xcoordinate;
+  final int ycoordinate;
+  final String description;
+  final int elevation;
+  final String aspect;
+  final int temperature;
+  final User user;
+
+  Post({
+    required this.xcoordinate,
+    required this.ycoordinate,
+    required this.description,
+    required this.elevation,
+    required this.aspect,
+    required this.temperature,
+    required this.user,
+  });
+}
+
+class User {
+  final String username;
+  final String password;
+  final String email;
+  final List<Post> posts;
+
+  User({
+    required this.username,
+    required this.password,
+    required this.email,
+    required this.posts,
+  });
+}
+
+class PostList extends ConsumerWidget {
+  const PostList({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final posts = ref.watch(postSereviceProvider);
+    return ListView.builder(
+      itemCount: posts.length,
+      itemBuilder: (context, index) {
+        return Text(posts[index].description);
+      },
+    );
   }
 }
