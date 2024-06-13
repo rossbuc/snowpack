@@ -39,13 +39,29 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  int _currentIndex = 0;
+  List<Widget> body = const [
+    Center(
+      child: Text("Home"),
+    ),
+    Center(
+      child: Text("Search"),
+    ),
+    Center(
+      child: Text("Post"),
+    ),
+    Center(
+      child: Text("Avi Report"),
+    ),
+    Center(
+      child: Text("User"),
+    ),
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: const Center(
-        child: IconButton(
-            onPressed: getPosts,
-            icon: Icon(CupertinoIcons.list_bullet_below_rectangle)),
+      body: Center(
+        child: body[_currentIndex],
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
@@ -71,16 +87,17 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
         type: BottomNavigationBarType.fixed,
-        onTap: navBarTapped,
+        onTap: (int newIndex) {
+          setState(() {
+            _currentIndex = newIndex;
+          });
+        },
       ),
     );
   }
-
-  void navBarTapped(int value) {
-    print("nav bar pressed and this was the value, $value");
-  }
 }
 
+// Make sure that when you migrate to using a db on Railway you change to https
 Future<List<dynamic>> getPosts() async {
   final url = Uri.http("localhost:8080", "/posts");
 
