@@ -141,6 +141,18 @@ class Post {
     required this.temperature,
     required this.user,
   });
+
+  factory Post.fromJson(Map<String, dynamic> json) {
+    return Post(
+      xcoordinate: json['xcoordinate'],
+      ycoordinate: json['ycoordinate'],
+      description: json['description'],
+      elevation: json['elevation'],
+      aspect: json['aspect'],
+      temperature: json['temperature'],
+      user: User.fromJson(json['user']),
+    );
+  }
 }
 
 class User {
@@ -155,6 +167,17 @@ class User {
     required this.email,
     required this.posts,
   });
+
+  factory User.fromJson(Map<String, dynamic> json) {
+    var postList = json['posts'] as List;
+    List<Post> posts = postList.map((i) => Post.fromJson(i)).toList();
+    return User(
+      username: json['username'],
+      password: json['password'],
+      email: json['email'],
+      posts: posts,
+    );
+  }
 }
 
 class PostList extends ConsumerWidget {
@@ -163,6 +186,7 @@ class PostList extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final posts = ref.watch(postSereviceProvider);
+    print("this is the list of posts: $posts");
     return ListView.builder(
       itemCount: posts.length,
       itemBuilder: (context, index) {
