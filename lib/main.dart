@@ -97,11 +97,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
 class PostService extends StateNotifier<List<Post>> {
   PostService(super.state) {
-    getPosts();
+    getPosts().then((value) => state = value);
   }
 
 // Make sure that when you migrate to using a db on Railway you change to https
-  Future<List<dynamic>> getPosts() async {
+  Future<List<Post>> getPosts() async {
     final url = Uri.http("localhost:8080", "/posts");
 
     print("get post called with thiss url: $url");
@@ -112,7 +112,8 @@ class PostService extends StateNotifier<List<Post>> {
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
         print(data);
-        return data;
+        List<Post> posts = data.map((json) => Post.fromJson(json)).toList();
+        return posts;
       } else {
         throw Exception('Failed to load posts');
       }
