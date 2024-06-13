@@ -9,6 +9,7 @@ import 'package:http/http.dart' as http;
 
 void main() {
   runApp(const MyApp());
+  print("helo world");
 }
 
 class MyApp extends StatelessWidget {
@@ -70,24 +71,33 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
         type: BottomNavigationBarType.fixed,
+        onTap: navBarTapped,
       ),
     );
   }
+
+  void navBarTapped(int value) {
+    print("nav bar pressed and this was the value, $value");
+  }
 }
 
-Future<Map<String, dynamic>> getPosts() async {
-  final url = Uri.https("localhost:8080", "/posts");
+Future<List<dynamic>> getPosts() async {
+  final url = Uri.http("localhost:8080", "/posts");
+
+  print("get post called with thiss url: $url");
 
   try {
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
+      print(data);
       return data;
     } else {
       throw Exception('Failed to load posts');
     }
   } catch (e) {
-    throw Exception('Failed to load posts');
+    print(e);
+    throw Exception('Failed to load posts with error code : $e');
   }
 }
