@@ -97,10 +97,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
 class PostService extends StateNotifier<List<Post>> {
   PostService(super.state) {
-    getPosts().then((value) => state = value);
+    getUsers().then((users) {
+      getPosts(users).then((posts) => state = posts);
+    });
   }
 
-  Future<List<Post>> getPosts() async {
+  Future<List<Post>> getPosts(List<User> users) async {
     final url = Uri.http("localhost:8080", "/posts");
 
     print("get post called with this url: $url");
@@ -113,7 +115,7 @@ class PostService extends StateNotifier<List<Post>> {
         print("Data received: $data");
         List<Post> posts = data.map((json) {
           try {
-            return Post.fromJson(json);
+            return Post.fromJson(json, users);
           } catch (e) {
             print("Error parsing post: $e, data: $json");
             throw e;
@@ -126,6 +128,32 @@ class PostService extends StateNotifier<List<Post>> {
     } catch (e) {
       print("Exception occurred: $e");
       throw Exception('Failed to load posts with error code: $e');
+    }
+  }
+
+  Future<List<User>> getUsers() async {
+    final url = Uri.http("localhost:8080", "/users");
+    print("get users called with this url: $url");
+    try {
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body) as List;
+        print("Data received: $data");
+        List<User> users = data.map((json) {
+          try {
+            return User.fromJson(json);
+          } catch (e) {
+            print("Error parsing user: $e, data: $json");
+            throw e;
+          }
+        }).toList();
+        return users;
+      } else {
+        throw Exception('Failed to load users');
+      }
+    } catch (e) {
+      print("Exception occurred: $e");
+      throw Exception('Failed to load users with error code: $e');
     }
   }
 }
@@ -151,8 +179,11 @@ class Post {
     required this.user,
   });
 
-  factory Post.fromJson(Map<String, dynamic> json) {
+  factory Post.fromJson(Map<String, dynamic> json, List<User> users) {
     print("Parsing Post from JSON: $json");
+    User user = users.firstWhere((user) => user.id == json['user_id'],
+        orElse: () => throw Exception(
+            "User not found for post with post id: ${json['id']}"));
     return Post(
       id: json['id'] ??
           (throw Exception(
@@ -163,8 +194,7 @@ class Post {
       elevation: json['elevation'] ?? 0,
       aspect: json['aspect'] ?? "No aspect",
       temperature: json['temperature'] ?? 0,
-      user:
-          User.fromJson(json['user'] ?? (throw Exception("User is required"))),
+      user: user,
     );
   }
 }
@@ -195,7 +225,7 @@ class User {
     var postList = json['posts'] as List? ?? [];
     List<Post> posts = postList.map((i) {
       try {
-        return Post.fromJson(i);
+        return Post.fromJson(i, []);
       } catch (e) {
         print("Error parsing post in user: $e, data: $i");
         throw e;
