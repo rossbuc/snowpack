@@ -175,6 +175,8 @@ class User {
   final String password;
   final String email;
   final List<Post> posts;
+  final List<User> followers;
+  final List<User> following;
 
   User({
     required this.id,
@@ -182,16 +184,42 @@ class User {
     required this.password,
     required this.email,
     required this.posts,
+    required this.followers,
+    required this.following,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
     print("Parsing User from JSON: $json");
+
+    // Convert the list of posts to a list of Post objects
     var postList = json['posts'] as List? ?? [];
     List<Post> posts = postList.map((i) {
       try {
         return Post.fromJson(i);
       } catch (e) {
         print("Error parsing post in user: $e, data: $i");
+        throw e;
+      }
+    }).toList();
+
+    // Convert the list of followers to a list of User objects
+    var followersList = json['followers'] as List? ?? [];
+    List<User> followers = followersList.map((i) {
+      try {
+        return User.fromJson(i);
+      } catch (e) {
+        print("Error parsing followers in user: $e, data: $i");
+        throw e;
+      }
+    }).toList();
+
+    // Convert the list of following to a list of User objects
+    var followingList = json['following'] as List? ?? [];
+    List<User> following = followingList.map((i) {
+      try {
+        return User.fromJson(i);
+      } catch (e) {
+        print("Error parsing the followng in user: $e, data: $i");
         throw e;
       }
     }).toList();
@@ -203,6 +231,8 @@ class User {
       password: json['password'] ?? "",
       email: json['email'] ?? "",
       posts: posts,
+      followers: followers,
+      following: following,
     );
   }
 }
