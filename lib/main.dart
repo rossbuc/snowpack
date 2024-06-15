@@ -10,6 +10,9 @@ void main() => runApp(const ProviderScope(child: MyApp()));
 final postServiceProvider =
     StateNotifierProvider<PostService, List<Post>>((ref) => PostService([]));
 
+final userServiceProvider =
+    StateNotifierProvider<UserService, List<User>>((ref) => UserService([]));
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -97,7 +100,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
 class PostService extends StateNotifier<List<Post>> {
   PostService(super.state) {
-    getPosts().then((value) => state = value);
+    getPosts().then((posts) => state = posts);
   }
 
   Future<List<Post>> getPosts() async {
@@ -130,6 +133,38 @@ class PostService extends StateNotifier<List<Post>> {
   }
 }
 
+class UserService extends StateNotifier<List<User>> {
+  UserService(super.state) {
+    getUsers().then((users) => state = users);
+  }
+
+  Future<List<User>> getUsers() async {
+    final url = Uri.http("localhost:8080", "/users");
+    print("get users called with this url: $url");
+    try {
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body) as List;
+        print("Data received: $data");
+        List<User> users = data.map((json) {
+          try {
+            return User.fromJson(json);
+          } catch (e) {
+            print("Error parsing user: $e, data: $json");
+            throw e;
+          }
+        }).toList();
+        return users;
+      } else {
+        throw Exception('Failed to load users');
+      }
+    } catch (e) {
+      print("Exception occurred: $e");
+      throw Exception('Failed to load users with error code: $e');
+    }
+  }
+}
+
 class Post {
   final int id;
   final int xcoordinate;
@@ -138,7 +173,7 @@ class Post {
   final int elevation;
   final String aspect;
   final int temperature;
-  final User user;
+  final int userId;
 
   Post({
     required this.id,
@@ -148,11 +183,10 @@ class Post {
     required this.elevation,
     required this.aspect,
     required this.temperature,
-    required this.user,
+    required this.userId,
   });
 
   factory Post.fromJson(Map<String, dynamic> json) {
-    print("Parsing Post from JSON: $json");
     return Post(
       id: json['id'] ??
           (throw Exception(
@@ -163,8 +197,7 @@ class Post {
       elevation: json['elevation'] ?? 0,
       aspect: json['aspect'] ?? "No aspect",
       temperature: json['temperature'] ?? 0,
-      user:
-          User.fromJson(json['user'] ?? (throw Exception("User is required"))),
+      userId: json['user']['id'],
     );
   }
 }
@@ -174,55 +207,95 @@ class User {
   final String username;
   final String password;
   final String email;
-  final List<Post> posts;
-  final List<User> followers;
-  final List<User> following;
+  final List<int> postIds;
+  final List<int> followerIds;
+  final List<int> followingIds;
 
   User({
     required this.id,
     required this.username,
     required this.password,
     required this.email,
-    required this.posts,
-    required this.followers,
-    required this.following,
+    required this.postIds,
+    required this.followerIds,
+    required this.followingIds,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
     print("Parsing User from JSON: $json");
 
-    // Convert the list of posts to a list of Post objects
+    // // Convert the list of posts to a list of Post objects
+    // var postList = json['posts'] as List? ?? [];
+    // List<Post> posts = postList.map((i) {
+    //   try {
+    //     return Post.fromJson(i, []);
+    //   } catch (e) {
+    //     print("Error parsing post in user: $e, data: $i");
+    //     throw e;
+    //   }
+    // }).toList();
+
+    // Convert the list of posts into a list of postids
     var postList = json['posts'] as List? ?? [];
-    List<Post> posts = postList.map((i) {
-      try {
-        return Post.fromJson(i);
-      } catch (e) {
-        print("Error parsing post in user: $e, data: $i");
-        throw e;
-      }
-    }).toList();
+    List<int> postIds = postList
+        .map((post) {
+          try {
+            return post['id'];
+          } catch (e) {
+            print("Error parsing post in user: $e, data: $post");
+            throw e;
+          }
+        })
+        .cast<int>()
+        .toList();
 
-    // Convert the list of followers to a list of User objects
+    // // Convert the list of followers to a list of User objects
+    // var followersList = json['followers'] as List? ?? [];
+    // List<User> followers = followersList.map((i) {
+    //   try {
+    //     return User.fromJson(i);
+    //   } catch (e) {
+    //     print("Error parsing followers in user: $e, data: $i");
+    //     throw e;
+    //   }
+    // }).toList();
+
     var followersList = json['followers'] as List? ?? [];
-    List<User> followers = followersList.map((i) {
-      try {
-        return User.fromJson(i);
-      } catch (e) {
-        print("Error parsing followers in user: $e, data: $i");
-        throw e;
-      }
-    }).toList();
+    List<int> followers = followersList
+        .map((follower) {
+          try {
+            return follower['id'];
+          } catch (e) {
+            print("Error parsing followers in user: $e, data: $follower");
+            throw e;
+          }
+        })
+        .cast<int>()
+        .toList();
 
-    // Convert the list of following to a list of User objects
+    // // Convert the list of following to a list of User objects
+    // var followingList = json['following'] as List? ?? [];
+    // List<User> following = followingList.map((i) {
+    //   try {
+    //     return User.fromJson(i);
+    //   } catch (e) {
+    //     print("Error parsing the followng in user: $e, data: $i");
+    //     throw e;
+    //   }
+    // }).toList();
+
     var followingList = json['following'] as List? ?? [];
-    List<User> following = followingList.map((i) {
-      try {
-        return User.fromJson(i);
-      } catch (e) {
-        print("Error parsing the followng in user: $e, data: $i");
-        throw e;
-      }
-    }).toList();
+    List<int> following = followingList
+        .map((following) {
+          try {
+            return following['id'];
+          } catch (e) {
+            print("Error parsing the following in user: $e, data: $following");
+            throw e;
+          }
+        })
+        .cast<int>()
+        .toList();
     return User(
       id: json['id'] ??
           (throw Exception(
@@ -230,9 +303,9 @@ class User {
       username: json['username'] ?? "",
       password: json['password'] ?? "",
       email: json['email'] ?? "",
-      posts: posts,
-      followers: followers,
-      following: following,
+      postIds: postIds,
+      followerIds: followers,
+      followingIds: following,
     );
   }
 }
