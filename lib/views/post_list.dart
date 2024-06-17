@@ -11,13 +11,13 @@ class PostList extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final posts = ref.watch(postServiceProvider);
-    final users = ref.watch(userServiceProvider);
+    final userService = ref.read(userServiceProvider.notifier);
     print("This is the list of posts: $posts");
     return ListView.builder(
       itemCount: posts.length,
       itemBuilder: (context, index) {
-        ref.watch(userServiceProvider).getUserById(posts[index].userId);
-        return PostTile(post: posts[index]);
+        final user = userService.getUserById(posts[index].userId);
+        return PostTile(post: posts[index], user: user!);
       },
     );
   }
