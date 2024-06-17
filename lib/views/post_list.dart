@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:snowpack/main.dart';
+import 'package:snowpack/views/post_tile.dart';
 
 class PostList extends ConsumerWidget {
   const PostList({super.key});
@@ -13,11 +14,7 @@ class PostList extends ConsumerWidget {
     return ListView.builder(
       itemCount: posts.length,
       itemBuilder: (context, index) {
-        return ListTile(
-          title: Text(posts[index].description),
-          subtitle: Text(
-              'Coordinates: (${posts[index].xcoordinate}, ${posts[index].ycoordinate})'),
-        );
+        return PostTile(post: posts[index]);
       },
     );
   }

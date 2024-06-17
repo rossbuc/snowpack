@@ -4,19 +4,13 @@ import 'package:snowpack/models/post.dart';
 class PostTile extends StatelessWidget {
   final Post post;
 
-  PostTile({
+  const PostTile({
+    super.key,
     required this.post,
   });
 
   String getFormattedDate() {
-    return "${date.day}/${date.month}/${date.year}";
-  }
-
-  String getFormattedDuration() {
-    String twoDigits(int n) => n.toString().padLeft(2, '0');
-    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
-    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
-    return "${twoDigits(duration.inHours)}:$twoDigitMinutes:$twoDigitSeconds";
+    return "${post.dateTime.day}/${post.dateTime.month}/${post.dateTime.year}";
   }
 
   @override
@@ -34,60 +28,60 @@ class PostTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                username,
-                style: TextStyle(
+                post.userId.toString(),
+                style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
                 ),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Text(
-                title,
-                style: TextStyle(
+                post.title,
+                style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
                 ),
               ),
-              SizedBox(height: 8),
-              Text(description),
-              SizedBox(height: 16),
+              const SizedBox(height: 8),
+              Text(post.description),
+              const SizedBox(height: 16),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "Distance",
+                      const Text(
+                        "Aspect",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Text("${distance.toStringAsFixed(2)} km"),
+                      Text(post.aspect),
                     ],
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "Duration",
+                      const Text(
+                        "Elevation",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Text(getFormattedDuration()),
+                      Text(post.elevation.toString()),
                     ],
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "Date",
+                      const Text(
+                        "Temperature",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Text(getFormattedDate()),
+                      Text(post.temperature.toString()),
                     ],
                   ),
                 ],
