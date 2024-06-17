@@ -4,11 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
-import 'package:snowpack/post.dart';
+import 'package:snowpack/models/post.dart';
 import 'package:snowpack/post_list.dart';
-import 'package:snowpack/post_service.dart';
-import 'package:snowpack/user.dart';
-import 'package:snowpack/user_service.dart';
+import 'package:snowpack/services/post_service.dart';
+import 'package:snowpack/models/user.dart';
+import 'package:snowpack/services/user_service.dart';
 
 void main() => runApp(const ProviderScope(child: MyApp()));
 
