@@ -63,6 +63,10 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: Image.asset("assets/images/SnowPack Main Logo.png"),
+        actions: const [Icon(CupertinoIcons.gear_alt)],
+      ),
       body: Center(
         child: body[_currentIndex],
       ),
