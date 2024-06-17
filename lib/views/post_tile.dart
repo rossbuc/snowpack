@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:snowpack/models/post.dart';
+import 'package:snowpack/models/user.dart';
 
 class PostTile extends StatelessWidget {
   final Post post;
+  final User user;
 
-  const PostTile({
-    super.key,
-    required this.post,
-  });
+  const PostTile({super.key, required this.post, required this.user});
 
   String getFormattedDate() {
     return "${post.dateTime.day}/${post.dateTime.month}/${post.dateTime.year}";

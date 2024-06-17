@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:snowpack/models/user.dart';
+import 'package:collection/collection.dart';
 
 class UserService extends StateNotifier<List<User>> {
   UserService(super.state) {
@@ -32,5 +33,9 @@ class UserService extends StateNotifier<List<User>> {
       print("Exception occurred: $e");
       throw Exception('Failed to load users with error code: $e');
     }
+  }
+
+  User? getUserById(int id) {
+    return state.firstWhereOrNull((user) => user.id == id);
   }
 }
