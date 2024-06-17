@@ -18,7 +18,7 @@ class PostTile extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Card(
-        elevation: 5,
+        elevation: 3,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
@@ -34,7 +34,7 @@ class PostTile extends StatelessWidget {
                   fontSize: 16,
                 ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 16),
               Text(
                 post.title,
                 style: const TextStyle(
@@ -43,8 +43,6 @@ class PostTile extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 8),
-              Text(post.description),
-              const SizedBox(height: 16),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -86,6 +84,8 @@ class PostTile extends StatelessWidget {
                   ),
                 ],
               ),
+              const SizedBox(height: 8),
+              Text(post.description),
             ],
           ),
         ),
