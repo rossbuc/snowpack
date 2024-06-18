@@ -29,8 +29,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Snowpack Demo',
       theme: ThemeData(
-        colorScheme:
-            ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 118, 179, 255)),
+        colorScheme: ColorScheme.fromSeed(
+            seedColor: const Color.fromARGB(255, 123, 182, 255)),
         useMaterial3: true,
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
@@ -69,8 +69,18 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
       appBar: AppBar(
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [colorScheme.primary, colorScheme.secondary],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
         elevation: 4.0,
         leading: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -118,6 +128,9 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
         type: BottomNavigationBarType.fixed,
+        currentIndex: _currentIndex,
+        selectedItemColor: colorScheme.primary,
+        unselectedItemColor: colorScheme.onSurface,
         onTap: (int newIndex) {
           setState(() {
             _currentIndex = newIndex;
