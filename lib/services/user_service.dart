@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:snowpack/models/user.dart';
@@ -10,7 +11,7 @@ class UserService extends StateNotifier<List<User>> {
   }
 
   Future<List<User>> getUsers() async {
-    final url = Uri.http("localhost:8080", "/users");
+    final url = Uri.http(dotenv.env['IP_ADDRESS']!, "/users");
     print("get users called with this url: $url");
     try {
       final response = await http.get(url);

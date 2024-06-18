@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:snowpack/models/post.dart';
 import 'package:snowpack/views/post_list.dart';
@@ -7,7 +8,12 @@ import 'package:snowpack/services/post_service.dart';
 import 'package:snowpack/models/user.dart';
 import 'package:snowpack/services/user_service.dart';
 
-void main() => runApp(const ProviderScope(child: MyApp()));
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: '.env');
+  print("dotenv loaded with IP_ADDRESS: ${dotenv.env['IP_ADDRESS']}");
+  runApp(const ProviderScope(child: MyApp()));
+}
 
 final postServiceProvider =
     StateNotifierProvider<PostService, List<Post>>((ref) => PostService([]));

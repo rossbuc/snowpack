@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:snowpack/models/post.dart';
@@ -9,7 +10,7 @@ class PostService extends StateNotifier<List<Post>> {
   }
 
   Future<List<Post>> getPosts() async {
-    final url = Uri.http("localhost:8080", "/posts");
+    final url = Uri.http(dotenv.env['IP_ADDRESS']!, "/posts");
 
     print("get post called with this url: $url");
 
