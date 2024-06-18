@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import 'package:snowpack/models/post.dart';
 import 'package:snowpack/models/user.dart';
 

@@ -27,9 +27,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Snowpack Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme:
+            ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 118, 179, 255)),
         useMaterial3: true,
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
@@ -70,17 +71,23 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 4.0,
         leading: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Image.asset(
             "assets/images/SnowPack Main Logo.png",
             scale: 3,
           ),
         ),
-        actions: const [
+        actions: [
           Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Icon(CupertinoIcons.gear_alt),
+            padding: const EdgeInsets.all(8.0),
+            child: IconButton(
+              icon: const Icon(CupertinoIcons.gear_alt),
+              onPressed: () {
+                settingsPressed();
+              },
+            ),
           )
         ],
       ),
@@ -118,5 +125,9 @@ class _MyHomePageState extends State<MyHomePage> {
         },
       ),
     );
+  }
+
+  void settingsPressed() {
+    print("Settings Pressed");
   }
 }

@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:snowpack/main.dart';
-import 'package:snowpack/models/user.dart';
 import 'package:snowpack/views/post_tile.dart';
 
 class PostList extends ConsumerWidget {
