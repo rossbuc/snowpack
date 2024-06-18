@@ -64,8 +64,19 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Image.asset("assets/images/SnowPack Main Logo.png"),
-        actions: const [Icon(CupertinoIcons.gear_alt)],
+        leading: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: Image.asset(
+            "assets/images/SnowPack Main Logo.png",
+            scale: 3,
+          ),
+        ),
+        actions: const [
+          Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Icon(CupertinoIcons.gear_alt),
+          )
+        ],
       ),
       body: Center(
         child: body[_currentIndex],
