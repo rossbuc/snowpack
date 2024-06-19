@@ -175,9 +175,6 @@ class PostCreate extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              _buildxCoordinateField(),
-              _buildyCoordinateField(),
-              _buildDateTimeField(),
               _buildTitleField(),
               _buildDescriptionField(),
               _buildElevationField(),

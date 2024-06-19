@@ -42,4 +42,22 @@ class PostService extends StateNotifier<List<Post>> {
       throw Exception('Failed to load posts with error code: $e');
     }
   }
+
+  Future<void> createPost(Post post) async {
+    final url = Uri.http(dotenv.env['IP_ADDRESS']!, "/posts/new");
+
+    final response = await http.post(
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(post.toJson()),
+    );
+    if (response.statusCode == 200) {
+      print('Post created successfully');
+    } else {
+      print('Failed to create post: ${response.statusCode}');
+      throw Exception('Failed to create post: ${response.statusCode}');
+    }
+  }
 }
