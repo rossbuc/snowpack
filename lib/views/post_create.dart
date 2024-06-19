@@ -14,6 +14,8 @@ class PostCreate extends StatelessWidget {
 
   PostCreate({super.key});
 
+  final _formKey = GlobalKey<FormState>();
+
   Widget _buildxCoordinateField() {
     return TextFormField(
       decoration: const InputDecoration(
@@ -169,6 +171,7 @@ class PostCreate extends StatelessWidget {
       body: Container(
         margin: EdgeInsets.all(16),
         child: Form(
+          key: _formKey,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -190,7 +193,15 @@ class PostCreate extends StatelessWidget {
                   "Post",
                   style: TextStyle(color: colorScheme.onPrimary),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  if (!_formKey.currentState!.validate()) {
+                    return;
+                  }
+
+                  _formKey.currentState!.save();
+                  print(
+                      "form saved: $_xCoordinate, $_yCoordinate, $_dateTime, $_title, $_description, $_elevation, $_aspect, $_temperature, $_userId");
+                },
               ),
             ],
           ),
