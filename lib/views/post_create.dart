@@ -2,40 +2,163 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PostCreate extends StatelessWidget {
+  late String? _xCoordinate;
+  late String? _yCoordinate;
+  late String? _dateTime;
+  late String? _title;
+  late String? _description;
+  late String? _elevation;
+  late String? _aspect;
+  late String? _temperature;
+  late String? _userId;
+
+  PostCreate({super.key});
+
   Widget _buildxCoordinateField() {
-    return null;
+    return TextFormField(
+      decoration: const InputDecoration(
+        labelText: "X Coordinate",
+      ),
+      validator: (String? value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter some text';
+        }
+        return null;
+      },
+      onSaved: (String? value) {
+        _xCoordinate = value;
+      },
+    );
   }
 
   Widget _buildyCoordinateField() {
-    return null;
+    return TextFormField(
+      decoration: const InputDecoration(
+        labelText: "Y Coordinate",
+      ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter some text';
+        }
+        return null;
+      },
+      onSaved: (String? value) {
+        _yCoordinate = value;
+      },
+    );
   }
 
   Widget _buildDateTimeField() {
-    return null;
+    return TextFormField(
+      decoration: const InputDecoration(
+        labelText: "Enter Date and Time (YYYY-MM-DD HH:MM:SS)",
+      ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter some text';
+        }
+        return null;
+      },
+      onSaved: (String? value) {
+        _dateTime = value;
+      },
+    );
   }
 
   Widget _buildTitleField() {
-    return null;
+    return TextFormField(
+      decoration: const InputDecoration(labelText: "Title"),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter some text';
+        } else {
+          return null;
+        }
+      },
+      onSaved: (value) {
+        _title = value;
+      },
+    );
   }
 
   Widget _buildDescriptionField() {
-    return null;
+    return TextFormField(
+      decoration: const InputDecoration(labelText: "Description"),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter some text';
+        } else {
+          return null;
+        }
+      },
+      onSaved: (value) {
+        _description = value;
+      },
+    );
   }
 
   Widget _buildElevationField() {
-    return null;
+    return TextFormField(
+      decoration: const InputDecoration(labelText: "Elevation"),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter some text';
+        } else {
+          return null;
+        }
+      },
+      onSaved: (value) {
+        _elevation = value;
+      },
+    );
   }
 
   Widget _buildAspectField() {
-    return null;
+    return TextFormField(
+      decoration: const InputDecoration(labelText: "Aspect"),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter some text';
+        } else {
+          return null;
+        }
+      },
+      onSaved: (value) {
+        _aspect = value;
+      },
+    );
   }
 
   Widget _buildTemperatureField() {
-    return null;
+    return TextFormField(
+      decoration: const InputDecoration(labelText: "Temperature"),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter some text';
+        } else {
+          return null;
+        }
+      },
+      onSaved: (value) {
+        _temperature = value;
+      },
+    );
   }
 
   Widget _buildUserIdField() {
-    return null;
+    return TextFormField(
+      decoration: const InputDecoration(labelText: "User ID"),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter some text';
+        } else {
+          return null;
+        }
+      },
+      onSaved: (value) {
+        _userId = value;
+      },
+    );
   }
 
   @override

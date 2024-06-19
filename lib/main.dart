@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:snowpack/models/post.dart';
+import 'package:snowpack/views/post_create.dart';
 import 'package:snowpack/views/post_list.dart';
 import 'package:snowpack/services/post_service.dart';
 import 'package:snowpack/models/user.dart';
@@ -49,20 +50,20 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _currentIndex = 0;
-  final List<Widget> body = const [
-    Center(
+  final List<Widget> body = [
+    const Center(
       child: PostList(),
     ),
-    Center(
+    const Center(
       child: Text("Search"),
     ),
     Center(
-      child: Text("Post"),
+      child: PostCreate(),
     ),
-    Center(
+    const Center(
       child: Text("Avi Report"),
     ),
-    Center(
+    const Center(
       child: Text("User"),
     ),
   ];
