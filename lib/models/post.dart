@@ -52,4 +52,19 @@ class Post {
       userId: json['user']['id'],
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'xcoordinate': xcoordinate,
+      'ycoordinate': ycoordinate,
+      'dateTime': dateTime.toIso8601String(),
+      'title': title,
+      'description': description,
+      'elevation': elevation,
+      'aspect': aspect,
+      'temperature': temperature,
+      'userId': userId,
+    };
+  }
 }
