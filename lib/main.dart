@@ -83,10 +83,17 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         elevation: 4.0,
         leading: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Image.asset(
-            "assets/images/SnowPack Main Logo.png",
-            scale: 3,
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: SizedBox(
+            width: 50, // Adjust the width as needed
+            height: 50, // Adjust the height as needed
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Image.asset(
+                "assets/images/SnowPack Logo Symbol.png",
+                fit: BoxFit.contain,
+              ),
+            ),
           ),
         ),
         actions: [
