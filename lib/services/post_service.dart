@@ -53,6 +53,7 @@ class PostService extends StateNotifier<List<Post>> {
       },
       body: jsonEncode(post.toJson()),
     );
+    print("this is the post we're trying to create: ${post.dateTime}");
     if (response.statusCode == 200) {
       print('Post created successfully');
     } else {

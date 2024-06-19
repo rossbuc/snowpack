@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:snowpack/main.dart';
+import 'package:snowpack/models/post.dart';
 
-class PostCreate extends StatelessWidget {
-  late String? _xCoordinate;
-  late String? _yCoordinate;
-  late String? _dateTime;
+class PostCreate extends ConsumerWidget {
+  // late String? _xCoordinate;
+  // late String? _yCoordinate;
+  // late String? _dateTime;
   late String? _title;
   late String? _description;
   late String? _elevation;
@@ -16,56 +19,56 @@ class PostCreate extends StatelessWidget {
 
   final _formKey = GlobalKey<FormState>();
 
-  Widget _buildxCoordinateField() {
-    return TextFormField(
-      decoration: const InputDecoration(
-        labelText: "X Coordinate",
-      ),
-      validator: (String? value) {
-        if (value == null || value.isEmpty) {
-          return 'Please enter some text';
-        }
-        return null;
-      },
-      onSaved: (String? value) {
-        _xCoordinate = value;
-      },
-    );
-  }
+  // Widget _buildxCoordinateField() {
+  //   return TextFormField(
+  //     decoration: const InputDecoration(
+  //       labelText: "X Coordinate",
+  //     ),
+  //     validator: (String? value) {
+  //       if (value == null || value.isEmpty) {
+  //         return 'Please enter some text';
+  //       }
+  //       return null;
+  //     },
+  //     onSaved: (String? value) {
+  //       _xCoordinate = value;
+  //     },
+  //   );
+  // }
 
-  Widget _buildyCoordinateField() {
-    return TextFormField(
-      decoration: const InputDecoration(
-        labelText: "Y Coordinate",
-      ),
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Please enter some text';
-        }
-        return null;
-      },
-      onSaved: (String? value) {
-        _yCoordinate = value;
-      },
-    );
-  }
+  // Widget _buildyCoordinateField() {
+  //   return TextFormField(
+  //     decoration: const InputDecoration(
+  //       labelText: "Y Coordinate",
+  //     ),
+  //     validator: (value) {
+  //       if (value == null || value.isEmpty) {
+  //         return 'Please enter some text';
+  //       }
+  //       return null;
+  //     },
+  //     onSaved: (String? value) {
+  //       _yCoordinate = value;
+  //     },
+  //   );
+  // }
 
-  Widget _buildDateTimeField() {
-    return TextFormField(
-      decoration: const InputDecoration(
-        labelText: "Enter Date and Time (YYYY-MM-DD HH:MM:SS)",
-      ),
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Please enter some text';
-        }
-        return null;
-      },
-      onSaved: (String? value) {
-        _dateTime = value;
-      },
-    );
-  }
+  // Widget _buildDateTimeField() {
+  //   return TextFormField(
+  //     decoration: const InputDecoration(
+  //       labelText: "Enter Date and Time (YYYY-MM-DD HH:MM:SS)",
+  //     ),
+  //     validator: (value) {
+  //       if (value == null || value.isEmpty) {
+  //         return 'Please enter some text';
+  //       }
+  //       return null;
+  //     },
+  //     onSaved: (String? value) {
+  //       _dateTime = value;
+  //     },
+  //   );
+  // }
 
   Widget _buildTitleField() {
     return TextFormField(
@@ -164,8 +167,9 @@ class PostCreate extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = Theme.of(context).colorScheme;
+    final postService = ref.read(postServiceProvider.notifier);
 
     return Scaffold(
       body: Container(
@@ -196,8 +200,22 @@ class PostCreate extends StatelessWidget {
                   }
 
                   _formKey.currentState!.save();
+
+                  Post post = Post(
+                    id: 0,
+                    xcoordinate: 0,
+                    ycoordinate: 0,
+                    dateTime: DateTime.now(),
+                    title: "trial post from the ting",
+                    description: "this is a trial post boss",
+                    elevation: 100000,
+                    aspect: "N",
+                    temperature: 2,
+                    userId: 1,
+                  );
+                  postService.createPost(post);
                   print(
-                      "form saved: $_xCoordinate, $_yCoordinate, $_dateTime, $_title, $_description, $_elevation, $_aspect, $_temperature, $_userId");
+                      "form saved: $_title, $_description, $_elevation, $_aspect, $_temperature, $_userId");
                 },
               ),
             ],
