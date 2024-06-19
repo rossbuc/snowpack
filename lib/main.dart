@@ -83,15 +83,23 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         elevation: 4.0,
         leading: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8),
-          child: SizedBox(
-            width: 50, // Adjust the width as needed
-            height: 50, // Adjust the height as needed
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Image.asset(
-                "assets/images/SnowPack Logo Symbol.png",
-                fit: BoxFit.contain,
+          padding: const EdgeInsets.only(left: 16, right: 8),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(16),
+            child: InkWell(
+              borderRadius: BorderRadius.circular(16),
+              splashColor: colorScheme.secondary.withOpacity(0.5),
+              onTap: _onLogoTap,
+              child: SizedBox(
+                width: 50, // Adjust the width as needed
+                height: 50, // Adjust the height as needed
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Image.asset(
+                    "assets/images/SnowPack Logo Symbol.png",
+                    fit: BoxFit.contain,
+                  ),
+                ),
               ),
             ),
           ),
@@ -149,5 +157,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void settingsPressed() {
     print("Settings Pressed");
+  }
+
+  void _onLogoTap() {
+    print("Logo Pressed");
   }
 }
