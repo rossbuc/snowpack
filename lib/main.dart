@@ -83,7 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         elevation: 4.0,
         leading: Padding(
-          padding: const EdgeInsets.only(left: 16, right: 8),
+          padding: const EdgeInsets.only(left: 20.0, right: 4.0, bottom: 4),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(16),
             child: InkWell(
@@ -94,7 +94,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 width: 50, // Adjust the width as needed
                 height: 50, // Adjust the height as needed
                 child: Align(
-                  alignment: Alignment.centerLeft,
+                  alignment: Alignment.center,
                   child: Image.asset(
                     "assets/images/SnowPack Logo Symbol.png",
                     fit: BoxFit.contain,
@@ -106,7 +106,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         actions: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: IconButton(
               icon: const Icon(CupertinoIcons.gear_alt),
               onPressed: () {
