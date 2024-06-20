@@ -9,6 +9,7 @@ import 'package:snowpack/views/post_list.dart';
 import 'package:snowpack/services/post_service.dart';
 import 'package:snowpack/models/user.dart';
 import 'package:snowpack/services/user_service.dart';
+import 'package:snowpack/views/user_homepage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -65,7 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
       child: Text("Avi Report"),
     ),
     const Center(
-      child: Text("User"),
+      child: UserHomepage(),
     ),
   ];
 
