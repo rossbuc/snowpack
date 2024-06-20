@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:snowpack/models/post.dart';
+import 'package:snowpack/views/avi_report.dart';
 import 'package:snowpack/views/feed.dart';
 import 'package:snowpack/views/post_create.dart';
 import 'package:snowpack/services/post_service.dart';
@@ -63,7 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
       child: PostCreate(),
     ),
     const Center(
-      child: Text("Avi Report"),
+      child: AviReport(),
     ),
     const Center(
       child: UserHomepage(),
