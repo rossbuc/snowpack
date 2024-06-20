@@ -19,57 +19,6 @@ class PostCreate extends ConsumerWidget {
 
   final _formKey = GlobalKey<FormState>();
 
-  // Widget _buildxCoordinateField() {
-  //   return TextFormField(
-  //     decoration: const InputDecoration(
-  //       labelText: "X Coordinate",
-  //     ),
-  //     validator: (String? value) {
-  //       if (value == null || value.isEmpty) {
-  //         return 'Please enter some text';
-  //       }
-  //       return null;
-  //     },
-  //     onSaved: (String? value) {
-  //       _xCoordinate = value;
-  //     },
-  //   );
-  // }
-
-  // Widget _buildyCoordinateField() {
-  //   return TextFormField(
-  //     decoration: const InputDecoration(
-  //       labelText: "Y Coordinate",
-  //     ),
-  //     validator: (value) {
-  //       if (value == null || value.isEmpty) {
-  //         return 'Please enter some text';
-  //       }
-  //       return null;
-  //     },
-  //     onSaved: (String? value) {
-  //       _yCoordinate = value;
-  //     },
-  //   );
-  // }
-
-  // Widget _buildDateTimeField() {
-  //   return TextFormField(
-  //     decoration: const InputDecoration(
-  //       labelText: "Enter Date and Time (YYYY-MM-DD HH:MM:SS)",
-  //     ),
-  //     validator: (value) {
-  //       if (value == null || value.isEmpty) {
-  //         return 'Please enter some text';
-  //       }
-  //       return null;
-  //     },
-  //     onSaved: (String? value) {
-  //       _dateTime = value;
-  //     },
-  //   );
-  // }
-
   Widget _buildTitleField() {
     return TextFormField(
       decoration: const InputDecoration(labelText: "Title"),
@@ -150,22 +99,6 @@ class PostCreate extends ConsumerWidget {
     );
   }
 
-  Widget _buildUserIdField() {
-    return TextFormField(
-      decoration: const InputDecoration(labelText: "User ID"),
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Please enter some text';
-        } else {
-          return null;
-        }
-      },
-      onSaved: (value) {
-        _userId = value!;
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = Theme.of(context).colorScheme;
@@ -184,7 +117,6 @@ class PostCreate extends ConsumerWidget {
               _buildElevationField(),
               _buildAspectField(),
               _buildTemperatureField(),
-              _buildUserIdField(),
               const SizedBox(height: 20),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
