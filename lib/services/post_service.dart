@@ -46,12 +46,24 @@ class PostService extends StateNotifier<List<Post>> {
   Future<void> createPost(Post post) async {
     final url = Uri.http(dotenv.env['IP_ADDRESS']!, "/posts/new");
 
+    final Map<String, dynamic> requestBody = {
+      'xcoordinate': post.xcoordinate,
+      'ycoordinate': post.ycoordinate,
+      'dateTime': post.dateTime.toIso8601String(),
+      'title': post.title,
+      'description': post.description,
+      'elevation': post.elevation,
+      'aspect': post.aspect,
+      'temperature': post.temperature,
+      'user': {'id': post.userId},
+    };
+
     final response = await http.post(
       url,
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: jsonEncode(post.toJson()),
+      body: jsonEncode(requestBody),
     );
     print("this is the post we're trying to create: ${post.dateTime}");
     if (response.statusCode == 200) {
