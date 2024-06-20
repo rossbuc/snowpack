@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:snowpack/models/post.dart';
+import 'package:snowpack/views/feed.dart';
 import 'package:snowpack/views/post_create.dart';
 import 'package:snowpack/views/post_list.dart';
 import 'package:snowpack/services/post_service.dart';
@@ -52,7 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int _currentIndex = 0;
   final List<Widget> body = [
     const Center(
-      child: PostList(),
+      child: Feed(),
     ),
     const Center(
       child: Text("Search"),
@@ -72,51 +73,6 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
-      appBar: AppBar(
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [colorScheme.primary, colorScheme.secondary],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-          ),
-        ),
-        elevation: 4.0,
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 20.0, right: 4.0, bottom: 4),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(16),
-            child: InkWell(
-              borderRadius: BorderRadius.circular(16),
-              splashColor: colorScheme.secondary.withOpacity(0.5),
-              onTap: _onLogoTap,
-              child: SizedBox(
-                width: 50, // Adjust the width as needed
-                height: 50, // Adjust the height as needed
-                child: Align(
-                  alignment: Alignment.center,
-                  child: Image.asset(
-                    "assets/images/SnowPack Logo Symbol.png",
-                    fit: BoxFit.contain,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: IconButton(
-              icon: const Icon(CupertinoIcons.gear_alt),
-              onPressed: () {
-                settingsPressed();
-              },
-            ),
-          )
-        ],
-      ),
       body: Center(
         child: body[_currentIndex],
       ),
@@ -154,13 +110,5 @@ class _MyHomePageState extends State<MyHomePage> {
         },
       ),
     );
-  }
-
-  void settingsPressed() {
-    print("Settings Pressed");
-  }
-
-  void _onLogoTap() {
-    print("Logo Pressed");
   }
 }
