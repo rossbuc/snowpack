@@ -41,6 +41,14 @@ class Post {
       throw const FormatException("Invalid date format");
     }
 
+    Aspect aspect;
+    try {
+      aspect = enumFromString(json['aspect']);
+    } catch (e) {
+      print("Invalid aspect format for aspect: ${json['aspect']}");
+      throw const FormatException("Invalid aspect format");
+    }
+
     return Post(
       id: json['id'],
       xcoordinate: json['xcoordinate'] ?? 0,
@@ -49,7 +57,7 @@ class Post {
       title: json['title'] ?? "No title",
       description: json['description'] ?? "No description",
       elevation: json['elevation'] ?? 0,
-      aspect: json['aspect'] ?? "No aspect",
+      aspect: aspect,
       temperature: json['temperature'] ?? 0,
       userId: json['user']['id'],
     );

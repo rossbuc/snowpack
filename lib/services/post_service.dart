@@ -25,11 +25,6 @@ class PostService extends StateNotifier<List<Post>> {
             return Post.fromJson(json);
           } catch (e) {
             print("Error parsing post: $e, data: $json");
-            if (json['dateTime'] == null) {
-              print("dateTime is null for post: $json");
-            } else {
-              print("Invalid datetime format for post: ${json['dateTime']}");
-            }
             throw e;
           }
         }).toList();
