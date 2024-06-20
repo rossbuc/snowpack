@@ -25,11 +25,6 @@ class PostService extends StateNotifier<List<Post>> {
             return Post.fromJson(json);
           } catch (e) {
             print("Error parsing post: $e, data: $json");
-            if (json['dateTime'] == null) {
-              print("dateTime is null for post: $json");
-            } else {
-              print("Invalid datetime format for post: ${json['dateTime']}");
-            }
             throw e;
           }
         }).toList();
@@ -40,6 +35,40 @@ class PostService extends StateNotifier<List<Post>> {
     } catch (e) {
       print("Exception occurred: $e");
       throw Exception('Failed to load posts with error code: $e');
+    }
+  }
+
+  Future<void> createPost(Post post) async {
+    final url = Uri.http(dotenv.env['IP_ADDRESS']!, "/posts/new");
+
+    String aspect = post.aspect.toString().split('.').last;
+    print("this is the aspect: $aspect");
+
+    final Map<String, dynamic> requestBody = {
+      'xcoordinate': post.xcoordinate,
+      'ycoordinate': post.ycoordinate,
+      'dateTime': post.dateTime.toIso8601String(),
+      'title': post.title,
+      'description': post.description,
+      'elevation': post.elevation,
+      'aspect': aspect,
+      'temperature': post.temperature,
+      'user': {'id': post.userId},
+    };
+
+    final response = await http.post(
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(requestBody),
+    );
+    print("this is the post we're trying to create: ${post.dateTime}");
+    if (response.statusCode == 200) {
+      print('Post created successfully');
+    } else {
+      print('Failed to create post: ${response.statusCode}');
+      throw Exception('Failed to create post: ${response.statusCode}');
     }
   }
 }

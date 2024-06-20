@@ -7,6 +7,9 @@ import 'package:snowpack/views/post_tile.dart';
 class PostList extends ConsumerWidget {
   const PostList({super.key});
 
+  // Thinking that we could wrap this in a Feed widget which will have the app bar then the post_list
+  // reason being that we are probably going to want to move the app bar into components anyway as its not gonna be the same for every nav route
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final posts = ref.watch(postServiceProvider);

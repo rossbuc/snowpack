@@ -1,17 +1,19 @@
+import 'package:snowpack/models/aspect.dart';
+
 class Post {
-  final int id;
+  final int? id;
   final int xcoordinate;
   final int ycoordinate;
   final DateTime dateTime;
   final String title;
   final String description;
   final int elevation;
-  final String aspect;
+  final Aspect aspect;
   final int temperature;
   final int userId;
 
   Post({
-    required this.id,
+    this.id,
     required this.xcoordinate,
     required this.ycoordinate,
     required this.dateTime,
@@ -39,6 +41,15 @@ class Post {
       throw const FormatException("Invalid date format");
     }
 
+    Aspect aspect;
+    try {
+      print("this is the aspect: ${json['aspect']}");
+      aspect = enumFromString(json['aspect']);
+    } catch (e) {
+      print("Invalid aspect format for aspect: ${json['aspect']}");
+      throw const FormatException("Invalid aspect format");
+    }
+
     return Post(
       id: json['id'],
       xcoordinate: json['xcoordinate'] ?? 0,
@@ -47,9 +58,24 @@ class Post {
       title: json['title'] ?? "No title",
       description: json['description'] ?? "No description",
       elevation: json['elevation'] ?? 0,
-      aspect: json['aspect'] ?? "No aspect",
+      aspect: aspect,
       temperature: json['temperature'] ?? 0,
       userId: json['user']['id'],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'xcoordinate': xcoordinate,
+      'ycoordinate': ycoordinate,
+      'dateTime': dateTime.toIso8601String(),
+      'title': title,
+      'description': description,
+      'elevation': elevation,
+      'aspect': aspect,
+      'temperature': temperature,
+      'userId': userId,
+    };
   }
 }
