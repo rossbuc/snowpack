@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:snowpack/main.dart';
+import 'package:snowpack/models/aspect.dart';
 import 'package:snowpack/models/post.dart';
 
 class PostCreate extends ConsumerWidget {
@@ -11,7 +12,7 @@ class PostCreate extends ConsumerWidget {
   late String _title;
   late String _description;
   late String _elevation;
-  late String _aspect;
+  late Aspect _aspect;
   late String _temperature;
   late String _userId;
 
@@ -143,7 +144,7 @@ class PostCreate extends ConsumerWidget {
                     title: _title,
                     description: _description,
                     elevation: int.parse(_elevation),
-                    aspect: _aspect,
+                    aspect: _aspect.toString(),
                     temperature: int.parse(_temperature),
                     userId:
                         1, //Hard coding in rossbuc (userId 1) for now then will pull from logged in user once functionality is there

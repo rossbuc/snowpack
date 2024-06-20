@@ -1,3 +1,5 @@
+import 'package:snowpack/models/aspect.dart';
+
 class Post {
   final int? id;
   final int xcoordinate;
@@ -6,7 +8,7 @@ class Post {
   final String title;
   final String description;
   final int elevation;
-  final String aspect;
+  final Aspect aspect;
   final int temperature;
   final int userId;
 
