@@ -7,16 +7,6 @@ import 'package:snowpack/models/post.dart';
 import 'package:snowpack/providers/post_form_provider.dart';
 
 class PostCreate extends ConsumerWidget {
-  // late String? _xCoordinate;
-  // late String? _yCoordinate;
-  // late String? _dateTime;
-  // late String _title;
-  // late String _description;
-  // late String _elevation;
-  // late Aspect _aspect;
-  // late String _temperature;
-  // late String _userId;
-
   PostCreate({super.key});
 
   final _formKey = GlobalKey<FormState>();
@@ -25,60 +15,78 @@ class PostCreate extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final postForm = ref.watch(postFormProvider);
-    final postFormNotifiter = ref.read(postFormProvider.notifier);
+    final postFormNotifier = ref.read(postFormProvider.notifier);
     final colorScheme = Theme.of(context).colorScheme;
     final postService = ref.read(postServiceProvider.notifier);
 
     return Scaffold(
-      body: Container(
-        margin: const EdgeInsets.all(16),
+      appBar: AppBar(
+        title: const Text("New Post"),
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
         child: Form(
           key: _formKey,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               TextFormField(
-                decoration: const InputDecoration(labelText: "Title"),
+                decoration: const InputDecoration(
+                  labelText: "Title",
+                  prefixIcon: Icon(Icons.title),
+                ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter some text';
-                  } else {
-                    return null;
+                    return 'Please enter a title';
                   }
+                  return null;
                 },
                 onChanged: (value) {
-                  postFormNotifiter.setTitle(value);
+                  postFormNotifier.setTitle(value);
                 },
               ),
+              const SizedBox(height: 16),
               TextFormField(
-                decoration: const InputDecoration(labelText: "Description"),
+                decoration: const InputDecoration(
+                  labelText: "Description",
+                  prefixIcon: Icon(Icons.description),
+                ),
+                maxLines: 3,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter some text';
-                  } else {
-                    return null;
+                    return 'Please enter a description';
                   }
+                  return null;
                 },
                 onChanged: (value) {
-                  postFormNotifiter.setDescription(value);
+                  postFormNotifier.setDescription(value);
                 },
               ),
+              const SizedBox(height: 16),
               TextFormField(
-                decoration: const InputDecoration(labelText: "Elevation"),
+                decoration: const InputDecoration(
+                  labelText: "Elevation",
+                  prefixIcon: Icon(Icons.terrain),
+                ),
+                keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter some text';
-                  } else {
-                    return null;
+                    return 'Please enter the elevation';
                   }
+                  return null;
                 },
                 onChanged: (value) {
-                  postFormNotifiter.setElevation(value);
+                  postFormNotifier.setElevation(value);
                 },
               ),
+              const SizedBox(height: 16),
               DropdownButtonFormField<Aspect>(
                 value: postForm.aspect,
-                decoration: const InputDecoration(labelText: 'Aspect'),
+                decoration: const InputDecoration(
+                  labelText: 'Aspect',
+                  prefixIcon: Icon(Icons.wb_sunny),
+                ),
                 items: Aspect.values.map((Aspect aspect) {
                   return DropdownMenuItem<Aspect>(
                     value: aspect,
@@ -86,7 +94,7 @@ class PostCreate extends ConsumerWidget {
                   );
                 }).toList(),
                 onChanged: (Aspect? value) {
-                  postFormNotifiter.setAspect(value);
+                  postFormNotifier.setAspect(value);
                 },
                 validator: (value) {
                   if (value == null) {
@@ -95,53 +103,62 @@ class PostCreate extends ConsumerWidget {
                   return null;
                 },
               ),
+              const SizedBox(height: 16),
               TextFormField(
-                decoration: const InputDecoration(labelText: "Temperature"),
+                decoration: const InputDecoration(
+                  labelText: "Temperature",
+                  prefixIcon: Icon(Icons.thermostat),
+                ),
+                keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter some text';
-                  } else {
-                    return null;
+                    return 'Please enter the temperature';
                   }
+                  return null;
                 },
                 onChanged: (value) {
-                  postFormNotifiter.setTemperature(value);
+                  postFormNotifier.setTemperature(value);
                 },
               ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: colorScheme.primary,
-                ),
-                child: Text(
-                  "Post",
-                  style: TextStyle(color: colorScheme.onPrimary),
-                ),
-                onPressed: () {
-                  if (!_formKey.currentState!.validate()) {
-                    return;
-                  }
+              const SizedBox(height: 32),
+              Center(
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: colorScheme.primary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 32,
+                      vertical: 12,
+                    ),
+                  ),
+                  child: Text(
+                    "Post",
+                    style: TextStyle(color: colorScheme.onPrimary),
+                  ),
+                  onPressed: () {
+                    if (!_formKey.currentState!.validate()) {
+                      return;
+                    }
 
-                  // _formKey.currentState!.save();
-
-                  Post post = Post(
-                    // id: 1,
-                    xcoordinate:
-                        0, // Again hard coded in coordinates and will move to use either current location or more likely a pin drop on a map api
-                    ycoordinate: 0,
-                    dateTime: DateTime
-                        .now(), // Keep as dateTime when post is created for now then change later to allow user to set time of each run, as its unlikely they're gonna post after every run or even that day
-                    title: postForm.title!,
-                    description: postForm.description!,
-                    elevation: int.parse(postForm.elevation!),
-                    aspect: postForm.aspect!,
-                    temperature: int.parse(postForm.temperature!),
-                    userId:
-                        1, //Hard coding in rossbuc (userId 1) for now then will pull from logged in user once functionality is there
-                  );
-                  postService.createPost(post);
-                  print("post created: $post");
-                },
+                    Post post = Post(
+                      xcoordinate: 0,
+                      ycoordinate: 0,
+                      dateTime: DateTime.now(),
+                      title: postForm.title!,
+                      description: postForm.description!,
+                      elevation: int.parse(postForm.elevation!),
+                      aspect: postForm.aspect!,
+                      temperature: int.parse(postForm.temperature!),
+                      userId: 1,
+                    );
+                    postService.createPost(post);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text("Post created: ${post.title}")),
+                    );
+                  },
+                ),
               ),
             ],
           ),
