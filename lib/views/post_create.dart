@@ -10,33 +10,17 @@ class PostCreate extends ConsumerWidget {
   // late String? _xCoordinate;
   // late String? _yCoordinate;
   // late String? _dateTime;
-  late String _title;
-  late String _description;
-  late String _elevation;
-  late Aspect _aspect;
-  late String _temperature;
-  late String _userId;
+  // late String _title;
+  // late String _description;
+  // late String _elevation;
+  // late Aspect _aspect;
+  // late String _temperature;
+  // late String _userId;
 
   PostCreate({super.key});
 
   final _formKey = GlobalKey<FormState>();
   final postFormProvider = ChangeNotifierProvider((ref) => PostFormProvider());
-
-  Widget _buildTemperatureField() {
-    return TextFormField(
-      decoration: const InputDecoration(labelText: "Temperature"),
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Please enter some text';
-        } else {
-          return null;
-        }
-      },
-      onSaved: (value) {
-        _temperature = value!;
-      },
-    );
-  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -147,17 +131,16 @@ class PostCreate extends ConsumerWidget {
                     ycoordinate: 0,
                     dateTime: DateTime
                         .now(), // Keep as dateTime when post is created for now then change later to allow user to set time of each run, as its unlikely they're gonna post after every run or even that day
-                    title: _title,
-                    description: _description,
-                    elevation: int.parse(_elevation),
-                    aspect: _aspect,
-                    temperature: int.parse(_temperature),
+                    title: postForm.title!,
+                    description: postForm.description!,
+                    elevation: int.parse(postForm.elevation!),
+                    aspect: postForm.aspect!,
+                    temperature: int.parse(postForm.temperature!),
                     userId:
                         1, //Hard coding in rossbuc (userId 1) for now then will pull from logged in user once functionality is there
                   );
                   postService.createPost(post);
-                  print(
-                      "form saved: $_title, $_description, $_elevation, $_aspect, $_temperature, $_userId");
+                  print("post created: $post");
                 },
               ),
             ],

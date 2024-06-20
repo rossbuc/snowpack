@@ -41,6 +41,9 @@ class PostService extends StateNotifier<List<Post>> {
   Future<void> createPost(Post post) async {
     final url = Uri.http(dotenv.env['IP_ADDRESS']!, "/posts/new");
 
+    String aspect = post.aspect.toString().split('.').last;
+    print("this is the aspect: $aspect");
+
     final Map<String, dynamic> requestBody = {
       'xcoordinate': post.xcoordinate,
       'ycoordinate': post.ycoordinate,
@@ -48,7 +51,7 @@ class PostService extends StateNotifier<List<Post>> {
       'title': post.title,
       'description': post.description,
       'elevation': post.elevation,
-      'aspect': post.aspect,
+      'aspect': aspect,
       'temperature': post.temperature,
       'user': {'id': post.userId},
     };

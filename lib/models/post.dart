@@ -43,6 +43,7 @@ class Post {
 
     Aspect aspect;
     try {
+      print("this is the aspect: ${json['aspect']}");
       aspect = enumFromString(json['aspect']);
     } catch (e) {
       print("Invalid aspect format for aspect: ${json['aspect']}");
