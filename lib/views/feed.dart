@@ -17,8 +17,7 @@ class Feed extends StatelessWidget {
           SliverAppBar(
             floating: true,
             snap: true,
-            pinned: true,
-            expandedHeight: 120,
+            // expandedHeight: 120,
             flexibleSpace: Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
@@ -62,9 +61,6 @@ class Feed extends StatelessWidget {
                 ),
               )
             ],
-          ),
-          SliverToBoxAdapter(
-            child: SizedBox(height: statusBarHeight + kToolbarHeight),
           ),
           const PostList(),
         ],
