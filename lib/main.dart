@@ -5,10 +5,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:snowpack/models/post.dart';
 import 'package:snowpack/views/feed.dart';
 import 'package:snowpack/views/post_create.dart';
-import 'package:snowpack/views/post_list.dart';
 import 'package:snowpack/services/post_service.dart';
 import 'package:snowpack/models/user.dart';
 import 'package:snowpack/services/user_service.dart';
+import 'package:snowpack/views/search_screen.dart';
 import 'package:snowpack/views/user_homepage.dart';
 
 void main() async {
@@ -56,8 +56,8 @@ class _MyHomePageState extends State<MyHomePage> {
     const Center(
       child: Feed(),
     ),
-    const Center(
-      child: Text("Search"),
+    Center(
+      child: SearchScreen(),
     ),
     Center(
       child: PostCreate(),
