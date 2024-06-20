@@ -1,19 +1,24 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:snowpack/views/post_list.dart';
 
 class Feed extends StatelessWidget {
-  const Feed({super.key});
+  const Feed({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final double statusBarHeight = MediaQuery.of(context).padding.top;
+
     return Scaffold(
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
             floating: true,
             snap: true,
+            pinned: true,
+            expandedHeight: 120,
             flexibleSpace: Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
@@ -57,6 +62,9 @@ class Feed extends StatelessWidget {
                 ),
               )
             ],
+          ),
+          SliverToBoxAdapter(
+            child: SizedBox(height: statusBarHeight + kToolbarHeight),
           ),
           const PostList(),
         ],
