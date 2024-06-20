@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:snowpack/main.dart';
 import 'package:snowpack/models/aspect.dart';
 import 'package:snowpack/models/post.dart';
+import 'package:snowpack/providers/post_form_provider.dart';
 
 class PostCreate extends ConsumerWidget {
   // late String? _xCoordinate;
@@ -19,70 +20,7 @@ class PostCreate extends ConsumerWidget {
   PostCreate({super.key});
 
   final _formKey = GlobalKey<FormState>();
-
-  Widget _buildTitleField() {
-    return TextFormField(
-      decoration: const InputDecoration(labelText: "Title"),
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Please enter some text';
-        } else {
-          return null;
-        }
-      },
-      onSaved: (value) {
-        _title = value!;
-      },
-    );
-  }
-
-  Widget _buildDescriptionField() {
-    return TextFormField(
-      decoration: const InputDecoration(labelText: "Description"),
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Please enter some text';
-        } else {
-          return null;
-        }
-      },
-      onSaved: (value) {
-        _description = value!;
-      },
-    );
-  }
-
-  Widget _buildElevationField() {
-    return TextFormField(
-      decoration: const InputDecoration(labelText: "Elevation"),
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Please enter some text';
-        } else {
-          return null;
-        }
-      },
-      onSaved: (value) {
-        _elevation = value!;
-      },
-    );
-  }
-
-  Widget _buildAspectField() {
-    return TextFormField(
-      decoration: const InputDecoration(labelText: "Aspect"),
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Please enter some text';
-        } else {
-          return null;
-        }
-      },
-      onSaved: (value) {
-        _aspect = value!;
-      },
-    );
-  }
+  final postFormProvider = ChangeNotifierProvider((ref) => PostFormProvider());
 
   Widget _buildTemperatureField() {
     return TextFormField(
@@ -102,6 +40,8 @@ class PostCreate extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final postForm = ref.watch(postFormProvider);
+    final postFormNotifiter = ref.read(postFormProvider.notifier);
     final colorScheme = Theme.of(context).colorScheme;
     final postService = ref.read(postServiceProvider.notifier);
 
@@ -113,11 +53,77 @@ class PostCreate extends ConsumerWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              _buildTitleField(),
-              _buildDescriptionField(),
-              _buildElevationField(),
-              _buildAspectField(),
-              _buildTemperatureField(),
+              TextFormField(
+                decoration: const InputDecoration(labelText: "Title"),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter some text';
+                  } else {
+                    return null;
+                  }
+                },
+                onChanged: (value) {
+                  postFormNotifiter.setTitle(value);
+                },
+              ),
+              TextFormField(
+                decoration: const InputDecoration(labelText: "Description"),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter some text';
+                  } else {
+                    return null;
+                  }
+                },
+                onChanged: (value) {
+                  postFormNotifiter.setDescription(value);
+                },
+              ),
+              TextFormField(
+                decoration: const InputDecoration(labelText: "Elevation"),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter some text';
+                  } else {
+                    return null;
+                  }
+                },
+                onChanged: (value) {
+                  postFormNotifiter.setElevation(value);
+                },
+              ),
+              DropdownButtonFormField<Aspect>(
+                value: postForm.aspect,
+                decoration: const InputDecoration(labelText: 'Aspect'),
+                items: Aspect.values.map((Aspect aspect) {
+                  return DropdownMenuItem<Aspect>(
+                    value: aspect,
+                    child: Text(aspect.toString().split('.').last),
+                  );
+                }).toList(),
+                onChanged: (Aspect? value) {
+                  postFormNotifiter.setAspect(value);
+                },
+                validator: (value) {
+                  if (value == null) {
+                    return 'Please select an aspect';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                decoration: const InputDecoration(labelText: "Temperature"),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter some text';
+                  } else {
+                    return null;
+                  }
+                },
+                onChanged: (value) {
+                  postFormNotifiter.setTemperature(value);
+                },
+              ),
               const SizedBox(height: 20),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -132,7 +138,7 @@ class PostCreate extends ConsumerWidget {
                     return;
                   }
 
-                  _formKey.currentState!.save();
+                  // _formKey.currentState!.save();
 
                   Post post = Post(
                     // id: 1,
@@ -144,7 +150,7 @@ class PostCreate extends ConsumerWidget {
                     title: _title,
                     description: _description,
                     elevation: int.parse(_elevation),
-                    aspect: _aspect.toString(),
+                    aspect: _aspect,
                     temperature: int.parse(_temperature),
                     userId:
                         1, //Hard coding in rossbuc (userId 1) for now then will pull from logged in user once functionality is there
