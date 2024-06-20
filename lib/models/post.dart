@@ -1,5 +1,5 @@
 class Post {
-  final int id;
+  final int? id;
   final int xcoordinate;
   final int ycoordinate;
   final DateTime dateTime;
@@ -11,7 +11,7 @@ class Post {
   final int userId;
 
   Post({
-    required this.id,
+    this.id,
     required this.xcoordinate,
     required this.ycoordinate,
     required this.dateTime,

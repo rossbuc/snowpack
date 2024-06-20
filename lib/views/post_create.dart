@@ -8,12 +8,12 @@ class PostCreate extends ConsumerWidget {
   // late String? _xCoordinate;
   // late String? _yCoordinate;
   // late String? _dateTime;
-  late String? _title;
-  late String? _description;
-  late String? _elevation;
-  late String? _aspect;
-  late String? _temperature;
-  late String? _userId;
+  late String _title;
+  late String _description;
+  late String _elevation;
+  late String _aspect;
+  late String _temperature;
+  late String _userId;
 
   PostCreate({super.key});
 
@@ -81,7 +81,7 @@ class PostCreate extends ConsumerWidget {
         }
       },
       onSaved: (value) {
-        _title = value;
+        _title = value!;
       },
     );
   }
@@ -97,7 +97,7 @@ class PostCreate extends ConsumerWidget {
         }
       },
       onSaved: (value) {
-        _description = value;
+        _description = value!;
       },
     );
   }
@@ -113,7 +113,7 @@ class PostCreate extends ConsumerWidget {
         }
       },
       onSaved: (value) {
-        _elevation = value;
+        _elevation = value!;
       },
     );
   }
@@ -129,7 +129,7 @@ class PostCreate extends ConsumerWidget {
         }
       },
       onSaved: (value) {
-        _aspect = value;
+        _aspect = value!;
       },
     );
   }
@@ -145,7 +145,7 @@ class PostCreate extends ConsumerWidget {
         }
       },
       onSaved: (value) {
-        _temperature = value;
+        _temperature = value!;
       },
     );
   }
@@ -161,7 +161,7 @@ class PostCreate extends ConsumerWidget {
         }
       },
       onSaved: (value) {
-        _userId = value;
+        _userId = value!;
       },
     );
   }
@@ -173,7 +173,7 @@ class PostCreate extends ConsumerWidget {
 
     return Scaffold(
       body: Container(
-        margin: EdgeInsets.all(16),
+        margin: const EdgeInsets.all(16),
         child: Form(
           key: _formKey,
           child: Column(
@@ -185,7 +185,7 @@ class PostCreate extends ConsumerWidget {
               _buildAspectField(),
               _buildTemperatureField(),
               _buildUserIdField(),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: colorScheme.primary,
@@ -202,16 +202,19 @@ class PostCreate extends ConsumerWidget {
                   _formKey.currentState!.save();
 
                   Post post = Post(
-                    id: 0,
-                    xcoordinate: 0,
+                    // id: 1,
+                    xcoordinate:
+                        0, // Again hard coded in coordinates and will move to use either current location or more likely a pin drop on a map api
                     ycoordinate: 0,
-                    dateTime: DateTime.now(),
-                    title: "trial post from the ting",
-                    description: "this is a trial post boss",
-                    elevation: 100000,
-                    aspect: "N",
-                    temperature: 2,
-                    userId: 1,
+                    dateTime: DateTime
+                        .now(), // Keep as dateTime when post is created for now then change later to allow user to set time of each run, as its unlikely they're gonna post after every run or even that day
+                    title: _title,
+                    description: _description,
+                    elevation: int.parse(_elevation),
+                    aspect: _aspect,
+                    temperature: int.parse(_temperature),
+                    userId:
+                        1, //Hard coding in rossbuc (userId 1) for now then will pull from logged in user once functionality is there
                   );
                   postService.createPost(post);
                   print(
