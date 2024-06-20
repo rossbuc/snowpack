@@ -15,12 +15,14 @@ class PostList extends ConsumerWidget {
     final posts = ref.watch(postServiceProvider);
     final userService = ref.read(userServiceProvider.notifier);
     print("This is the list of posts: $posts");
-    return ListView.builder(
-      itemCount: posts.length,
-      itemBuilder: (context, index) {
-        final user = userService.getUserById(posts[index].userId);
-        return PostTile(post: posts[index], user: user!);
-      },
+    return SliverList(
+      delegate: SliverChildBuilderDelegate(
+        childCount: posts.length,
+        (context, index) {
+          final user = userService.getUserById(posts[index].userId);
+          return PostTile(post: posts[index], user: user!);
+        },
+      ),
     );
   }
 }

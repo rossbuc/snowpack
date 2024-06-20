@@ -102,7 +102,8 @@ class Feed extends StatelessWidget {
                 ),
               )
             ],
-          )
+          ),
+          const PostList(),
         ],
       ),
     );
