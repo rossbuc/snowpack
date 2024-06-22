@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:snowpack/main.dart';
 import 'package:snowpack/views/post_list.dart';
 
-class Feed extends StatelessWidget {
-  const Feed({Key? key}) : super(key: key);
+class Feed extends ConsumerWidget {
+  const Feed({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
-    final double statusBarHeight = MediaQuery.of(context).padding.top;
+    final postService = ref.read(postServiceProvider.notifier);
 
     return Scaffold(
       body: CustomScrollView(
@@ -65,7 +66,7 @@ class Feed extends StatelessWidget {
                 child: PopupMenuButton<String>(
                   icon: const Icon(CupertinoIcons.line_horizontal_3),
                   onSelected: (String result) {
-                    _sortPosts(result);
+                    postService.sortPosts(result);
                   },
                   itemBuilder: (BuildContext context) =>
                       <PopupMenuEntry<String>>[
@@ -88,21 +89,11 @@ class Feed extends StatelessWidget {
     );
   }
 
-  void _sortPosts(String criteria) {
-    if (criteria == 'time') {
-      print("Sorting by Time");
-      // Add your sorting logic here
-    } else if (criteria == 'location') {
-      print("Sorting by Location");
-      // Add your sorting logic here
-    }
+  void settingsPressed() {
+    print("Settings Pressed");
   }
-}
 
-void settingsPressed() {
-  print("Settings Pressed");
-}
-
-void _onLogoTap() {
-  print("Logo Pressed");
+  void _onLogoTap() {
+    print("Logo Pressed");
+  }
 }

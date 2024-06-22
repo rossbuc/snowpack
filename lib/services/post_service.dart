@@ -71,4 +71,14 @@ class PostService extends StateNotifier<List<Post>> {
       throw Exception('Failed to create post: ${response.statusCode}');
     }
   }
+
+  void sortPosts(String criteria) {
+    if (criteria == 'time') {
+      print("Sorting by Time");
+      // Add your sorting logic here
+    } else if (criteria == 'location') {
+      print("Sorting by Location");
+      // Add your sorting logic here
+    }
+  }
 }
