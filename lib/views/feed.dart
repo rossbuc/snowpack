@@ -59,13 +59,43 @@ class Feed extends StatelessWidget {
                     settingsPressed();
                   },
                 ),
-              )
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: PopupMenuButton<String>(
+                  icon: const Icon(CupertinoIcons.line_horizontal_3),
+                  onSelected: (String result) {
+                    _sortPosts(result);
+                  },
+                  itemBuilder: (BuildContext context) =>
+                      <PopupMenuEntry<String>>[
+                    const PopupMenuItem<String>(
+                      value: 'time',
+                      child: Text('Sort by Time'),
+                    ),
+                    const PopupMenuItem<String>(
+                      value: 'location',
+                      child: Text('Sort by Location'),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
           const PostList(),
         ],
       ),
     );
+  }
+
+  void _sortPosts(String criteria) {
+    if (criteria == 'time') {
+      print("Sorting by Time");
+      // Add your sorting logic here
+    } else if (criteria == 'location') {
+      print("Sorting by Location");
+      // Add your sorting logic here
+    }
   }
 }
 
