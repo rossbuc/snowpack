@@ -9,8 +9,15 @@ class PostService extends StateNotifier<List<Post>> {
     getPosts().then((posts) => state = posts);
   }
 
-  Future<List<Post>> getPosts() async {
-    final url = Uri.http(dotenv.env['IP_ADDRESS']!, "/posts");
+  int? _currentElevationFilter;
+
+  int? get currentElevationFilter => _currentElevationFilter;
+
+  Future<List<Post>> getPosts({String? sortBy, int? elevation}) async {
+    final url = Uri.http(dotenv.env['IP_ADDRESS']!, "/posts", {
+      "sortBy": sortBy,
+      "elevation": elevation.toString(),
+    });
 
     print("get post called with this url: $url");
 
@@ -36,6 +43,12 @@ class PostService extends StateNotifier<List<Post>> {
       print("Exception occurred: $e");
       throw Exception('Failed to load posts with error code: $e');
     }
+  }
+
+  void setElevationFilter(int elevation) {
+    _currentElevationFilter = elevation;
+    // Optionally, you might want to fetch posts with the new elevation filter here
+    getPosts(elevation: elevation).then((posts) => state = posts);
   }
 
   Future<void> createPost(Post post) async {

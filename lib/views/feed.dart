@@ -2,15 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:snowpack/main.dart';
+import 'package:snowpack/services/post_service.dart';
 import 'package:snowpack/views/post_list.dart';
 
 class Feed extends ConsumerWidget {
-  const Feed({super.key});
+  const Feed({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
     final postService = ref.read(postServiceProvider.notifier);
+
+    void _settingsPressed() {
+      print("Settings Pressed");
+      _showFilterMenu(context, postService);
+    }
 
     return Scaffold(
       body: CustomScrollView(
@@ -57,7 +63,7 @@ class Feed extends ConsumerWidget {
                 child: IconButton(
                   icon: const Icon(CupertinoIcons.gear_alt),
                   onPressed: () {
-                    settingsPressed();
+                    _settingsPressed();
                   },
                 ),
               ),
@@ -89,11 +95,31 @@ class Feed extends ConsumerWidget {
     );
   }
 
-  void settingsPressed() {
-    print("Settings Pressed");
-  }
-
   void _onLogoTap() {
     print("Logo Pressed");
+  }
+
+  void _showFilterMenu(BuildContext context, PostService postService) {
+    final initialValue = postService.currentElevationFilter ?? 0;
+
+    showMenu<int>(
+      context: context,
+      position:
+          RelativeRect.fromLTRB(0, 100, 0, 0), // Adjust position as needed
+      items: List.generate(
+        110, // Adjust based on the range of elevation you want to display
+        (index) => PopupMenuItem<int>(
+          value: index * 100,
+          child: Text('${index * 100} ft'),
+          textStyle: TextStyle(color: Colors.black),
+        ),
+      ),
+      initialValue: initialValue,
+    ).then((value) {
+      if (value != null) {
+        postService.setElevationFilter(value);
+        print("Selected Elevation: $value ft");
+      }
+    });
   }
 }
