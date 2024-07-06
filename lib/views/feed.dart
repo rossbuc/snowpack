@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:snowpack/main.dart';
+import 'package:snowpack/models/aspect.dart';
 import 'package:snowpack/services/post_service.dart';
 import 'package:snowpack/views/post_list.dart';
 
@@ -100,26 +101,72 @@ class Feed extends ConsumerWidget {
   }
 
   void _showFilterMenu(BuildContext context, PostService postService) {
-    final initialValue = postService.currentElevationFilter ?? 0;
+    final initialElevationValue = postService.currentElevationFilter ?? 0;
 
-    showMenu<int>(
+    // Aspect Filter Dropdown
+    final aspects = Aspect.values;
+    Aspect? selectedAspect;
+
+    showDialog(
       context: context,
-      position:
-          RelativeRect.fromLTRB(0, 100, 0, 0), // Adjust position as needed
-      items: List.generate(
-        110, // Adjust based on the range of elevation you want to display
-        (index) => PopupMenuItem<int>(
-          value: index * 100,
-          child: Text('${index * 100} ft'),
-          textStyle: TextStyle(color: Colors.black),
-        ),
-      ),
-      initialValue: initialValue,
-    ).then((value) {
-      if (value != null) {
-        postService.setElevationFilter(value);
-        print("Selected Elevation: $value ft");
-      }
-    });
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Filter Posts'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Elevation Filter
+              DropdownButton<int>(
+                value: initialElevationValue,
+                onChanged: (value) {
+                  if (value != null) {
+                    postService.setElevationFilter(value);
+                    print("Selected Elevation: $value ft");
+                  }
+                },
+                items: List.generate(
+                  110, // Adjust based on the range of elevation you want to display
+                  (index) => DropdownMenuItem<int>(
+                    value: index * 100,
+                    child: Text('${index * 100} ft'),
+                  ),
+                ),
+              ),
+              SizedBox(height: 20),
+              // Aspect Filter
+              DropdownButton<Aspect>(
+                hint: Text('Select Aspect'),
+                value: selectedAspect,
+                onChanged: (value) {
+                  selectedAspect = value;
+                  Navigator.of(context).pop();
+                  if (value != null) {
+                    postService.getPosts(
+                        elevation: postService.currentElevationFilter,
+                        sortBy: value.toString().split('.').last);
+                    print(
+                        "Selected Aspect: ${value.toString().split('.').last}");
+                  }
+                },
+                items: aspects.map((Aspect aspect) {
+                  return DropdownMenuItem<Aspect>(
+                    value: aspect,
+                    child: Text(aspect.toString().split('.').last),
+                  );
+                }).toList(),
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
   }
 }
