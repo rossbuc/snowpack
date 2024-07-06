@@ -77,7 +77,7 @@ class PostTile extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Text(post.aspect.toString()),
+                      Text(post.aspect.toString().split('.').last),
                     ],
                   ),
                   Column(

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
+import 'package:snowpack/models/aspect.dart';
 import 'package:snowpack/models/post.dart';
 
 class PostService extends StateNotifier<List<Post>> {
@@ -9,8 +10,37 @@ class PostService extends StateNotifier<List<Post>> {
     getPosts().then((posts) => state = posts);
   }
 
-  Future<List<Post>> getPosts() async {
-    final url = Uri.http(dotenv.env['IP_ADDRESS']!, "/posts");
+  int? _currentElevationFilter;
+
+  int? get currentElevationFilter => _currentElevationFilter;
+
+  Aspect? _currentAspectFilter;
+
+  Aspect? get currentAspectFilter => _currentAspectFilter;
+
+  int? _currentTemperatureFilter;
+
+  int? get currentTemperatureFilter => _currentTemperatureFilter;
+
+  Future<List<Post>> getPosts(
+      {String? sortBy,
+      int? elevation,
+      Aspect? aspect,
+      int? temperature}) async {
+    final queryParams = <String, String>{};
+    if (sortBy != null) {
+      queryParams['sortBy'] = sortBy;
+    }
+    if (elevation != null) {
+      queryParams['elevation'] = elevation.toString();
+    }
+    if (aspect != null) {
+      queryParams['aspect'] = aspect.name;
+    }
+    if (temperature != null) {
+      queryParams['temperature'] = temperature.toString();
+    }
+    final url = Uri.http(dotenv.env['IP_ADDRESS']!, "/posts", queryParams);
 
     print("get post called with this url: $url");
 
@@ -36,6 +66,29 @@ class PostService extends StateNotifier<List<Post>> {
       print("Exception occurred: $e");
       throw Exception('Failed to load posts with error code: $e');
     }
+  }
+
+  void setElevationFilter(int elevation) {
+    _currentElevationFilter = elevation;
+    // Optionally, you might want to fetch posts with the new elevation filter here
+    getPosts(elevation: elevation).then((posts) => state = posts);
+  }
+
+  void setAspectFilter(Aspect aspect) {
+    _currentAspectFilter = aspect;
+    getPosts(aspect: aspect).then((posts) => state = posts);
+  }
+
+  void setTemperatureFilter(int temperature) {
+    _currentTemperatureFilter = temperature;
+    getPosts(temperature: temperature).then((posts) => state = posts);
+  }
+
+  void clearFilters() {
+    _currentElevationFilter = null;
+    _currentAspectFilter = null;
+    _currentTemperatureFilter = null;
+    getPosts().then((posts) => state = posts);
   }
 
   Future<void> createPost(Post post) async {
@@ -69,6 +122,16 @@ class PostService extends StateNotifier<List<Post>> {
     } else {
       print('Failed to create post: ${response.statusCode}');
       throw Exception('Failed to create post: ${response.statusCode}');
+    }
+  }
+
+  void sortPosts(String criteria) {
+    if (criteria == 'time') {
+      print("Sorting by Time");
+      // Add your sorting logic here
+    } else if (criteria == 'location') {
+      print("Sorting by Location");
+      // Add your sorting logic here
     }
   }
 }
