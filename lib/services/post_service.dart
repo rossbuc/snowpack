@@ -129,6 +129,7 @@ class PostService extends StateNotifier<List<Post>> {
     if (criteria == 'time') {
       print("Sorting by Time");
       // Add your sorting logic here
+      getPosts(sortBy: "recent").then((posts) => state = posts);
     } else if (criteria == 'location') {
       print("Sorting by Location");
       // Add your sorting logic here
