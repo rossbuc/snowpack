@@ -14,6 +14,10 @@ class PostService extends StateNotifier<List<Post>> {
 
   int? get currentElevationFilter => _currentElevationFilter;
 
+  Aspect? _currentAspectFilter;
+
+  Aspect? get currentAspectFilter => _currentAspectFilter;
+
   Future<List<Post>> getPosts(
       {String? sortBy, int? elevation, Aspect? aspect}) async {
     final queryParams = <String, String>{};
@@ -24,7 +28,7 @@ class PostService extends StateNotifier<List<Post>> {
       queryParams['elevation'] = elevation.toString();
     }
     if (aspect != null) {
-      queryParams['aspect'] = aspect.toString();
+      queryParams['aspect'] = aspect.name;
     }
     final url = Uri.http(dotenv.env['IP_ADDRESS']!, "/posts", queryParams);
 
@@ -58,6 +62,11 @@ class PostService extends StateNotifier<List<Post>> {
     _currentElevationFilter = elevation;
     // Optionally, you might want to fetch posts with the new elevation filter here
     getPosts(elevation: elevation).then((posts) => state = posts);
+  }
+
+  void setAspectFilter(Aspect aspect) {
+    _currentAspectFilter = aspect;
+    getPosts(aspect: aspect).then((posts) => state = posts);
   }
 
   Future<void> createPost(Post post) async {

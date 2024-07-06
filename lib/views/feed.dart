@@ -102,10 +102,10 @@ class Feed extends ConsumerWidget {
 
   void _showFilterMenu(BuildContext context, PostService postService) {
     final initialElevationValue = postService.currentElevationFilter ?? 0;
+    final initialAspectValue = postService.currentAspectFilter;
 
     // Aspect Filter Dropdown
-    final aspects = Aspect.values;
-    Aspect? selectedAspect;
+    const aspects = Aspect.values;
 
     showDialog(
       context: context,
@@ -136,14 +136,10 @@ class Feed extends ConsumerWidget {
               // Aspect Filter
               DropdownButton<Aspect>(
                 hint: Text('Select Aspect'),
-                value: selectedAspect,
+                value: initialAspectValue,
                 onChanged: (value) {
-                  selectedAspect = value;
-                  Navigator.of(context).pop();
                   if (value != null) {
-                    postService.getPosts(
-                        elevation: postService.currentElevationFilter,
-                        sortBy: value.toString().split('.').last);
+                    postService.setAspectFilter(value);
                     print(
                         "Selected Aspect: ${value.toString().split('.').last}");
                   }
