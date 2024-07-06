@@ -166,8 +166,8 @@ class Feed extends ConsumerWidget {
                 items: List.generate(
                   10, // Adjust based on the range of temperature you want to display
                   (index) => DropdownMenuItem<int>(
-                    value: (index - 5) * 10,
-                    child: Text('${(index - 5) * 10} degrees'),
+                    value: (index - 5) * 5,
+                    child: Text('${(index - 5) * 5} degrees'),
                   ),
                 ),
               )
@@ -178,8 +178,14 @@ class Feed extends ConsumerWidget {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Close'),
+              child: const Text('Close'),
             ),
+            TextButton(
+                onPressed: () {
+                  postService.clearFilters();
+                  Navigator.of(context).pop();
+                },
+                child: const Text("Reset"))
           ],
         );
       },

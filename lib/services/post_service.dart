@@ -84,6 +84,13 @@ class PostService extends StateNotifier<List<Post>> {
     getPosts(temperature: temperature).then((posts) => state = posts);
   }
 
+  void clearFilters() {
+    _currentElevationFilter = null;
+    _currentAspectFilter = null;
+    _currentTemperatureFilter = null;
+    getPosts().then((posts) => state = posts);
+  }
+
   Future<void> createPost(Post post) async {
     final url = Uri.http(dotenv.env['IP_ADDRESS']!, "/posts/new");
 
