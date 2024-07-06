@@ -14,7 +14,7 @@ class Feed extends ConsumerWidget {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
     final postService = ref.read(postServiceProvider.notifier);
 
-    void _settingsPressed() {
+    void settingsPressed() {
       print("Settings Pressed");
       _showFilterMenu(context, postService);
     }
@@ -64,7 +64,7 @@ class Feed extends ConsumerWidget {
                 child: IconButton(
                   icon: const Icon(CupertinoIcons.gear_alt),
                   onPressed: () {
-                    _settingsPressed();
+                    settingsPressed();
                   },
                 ),
               ),
@@ -103,6 +103,7 @@ class Feed extends ConsumerWidget {
   void _showFilterMenu(BuildContext context, PostService postService) {
     final initialElevationValue = postService.currentElevationFilter ?? 0;
     final initialAspectValue = postService.currentAspectFilter;
+    final initialTemperatureValue = postService.currentTemperatureFilter ?? 0;
 
     // Aspect Filter Dropdown
     const aspects = Aspect.values;
@@ -151,6 +152,25 @@ class Feed extends ConsumerWidget {
                   );
                 }).toList(),
               ),
+              SizedBox(height: 20),
+              // Temperature Filter
+              DropdownButton<int>(
+                hint: Text("Select Temperature Range"),
+                value: initialTemperatureValue,
+                onChanged: (value) {
+                  if (value != null) {
+                    postService.setTemperatureFilter(value);
+                    print("Selected Temperature: $value degrees");
+                  }
+                },
+                items: List.generate(
+                  10, // Adjust based on the range of temperature you want to display
+                  (index) => DropdownMenuItem<int>(
+                    value: (index - 5) * 10,
+                    child: Text('${(index - 5) * 10} degrees'),
+                  ),
+                ),
+              )
             ],
           ),
           actions: <Widget>[
