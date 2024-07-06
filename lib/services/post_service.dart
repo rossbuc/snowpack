@@ -18,8 +18,15 @@ class PostService extends StateNotifier<List<Post>> {
 
   Aspect? get currentAspectFilter => _currentAspectFilter;
 
+  int? _currentTemperatureFilter;
+
+  int? get currentTemperatureFilter => _currentTemperatureFilter;
+
   Future<List<Post>> getPosts(
-      {String? sortBy, int? elevation, Aspect? aspect}) async {
+      {String? sortBy,
+      int? elevation,
+      Aspect? aspect,
+      int? temperature}) async {
     final queryParams = <String, String>{};
     if (sortBy != null) {
       queryParams['sortBy'] = sortBy;
@@ -29,6 +36,9 @@ class PostService extends StateNotifier<List<Post>> {
     }
     if (aspect != null) {
       queryParams['aspect'] = aspect.name;
+    }
+    if (temperature != null) {
+      queryParams['temperature'] = temperature.toString();
     }
     final url = Uri.http(dotenv.env['IP_ADDRESS']!, "/posts", queryParams);
 
@@ -67,6 +77,11 @@ class PostService extends StateNotifier<List<Post>> {
   void setAspectFilter(Aspect aspect) {
     _currentAspectFilter = aspect;
     getPosts(aspect: aspect).then((posts) => state = posts);
+  }
+
+  void setTemperatureFilter(int temperature) {
+    _currentTemperatureFilter = temperature;
+    getPosts(temperature: temperature).then((posts) => state = posts);
   }
 
   Future<void> createPost(Post post) async {
