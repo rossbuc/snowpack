@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
+import 'package:snowpack/models/aspect.dart';
 import 'package:snowpack/models/post.dart';
 
 class PostService extends StateNotifier<List<Post>> {
@@ -13,13 +14,17 @@ class PostService extends StateNotifier<List<Post>> {
 
   int? get currentElevationFilter => _currentElevationFilter;
 
-  Future<List<Post>> getPosts({String? sortBy, int? elevation}) async {
+  Future<List<Post>> getPosts(
+      {String? sortBy, int? elevation, Aspect? aspect}) async {
     final queryParams = <String, String>{};
     if (sortBy != null) {
       queryParams['sortBy'] = sortBy;
     }
     if (elevation != null) {
       queryParams['elevation'] = elevation.toString();
+    }
+    if (aspect != null) {
+      queryParams['aspect'] = aspect.toString();
     }
     final url = Uri.http(dotenv.env['IP_ADDRESS']!, "/posts", queryParams);
 
