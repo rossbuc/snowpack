@@ -7,6 +7,8 @@ import 'package:snowpack/views/post_tile.dart';
 class PostList extends ConsumerWidget {
   const PostList({super.key});
 
+  // SliverToBoxAdapter, potential solution for safe scroll view
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final posts = ref.watch(postServiceProvider);

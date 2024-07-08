@@ -24,7 +24,7 @@ class Feed extends ConsumerWidget {
         slivers: [
           SliverAppBar(
             floating: true,
-            snap: true,
+            // snap: true,
             // expandedHeight: 120,
             flexibleSpace: Container(
               decoration: BoxDecoration(
