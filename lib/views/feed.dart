@@ -20,15 +20,25 @@ class _FeedState extends ConsumerState<Feed> {
   @override
   void initState() {
     super.initState();
-    _scrollController.addListener(() {
+    _scrollController.addListener(_scrollListener);
+  }
+
+  void _scrollListener() {
+    final currentPosition = _scrollController.position.pixels;
+    final isAtTop = currentPosition <= 0;
+    final isAppBarVisible = currentPosition < 100;
+
+    if (_isAppBarVisible != isAppBarVisible || isAtTop) {
       setState(() {
-        _isAppBarVisible = _scrollController.position.pixels < 100;
+        _isAppBarVisible = isAppBarVisible;
       });
-    });
+    }
+    print(_isAppBarVisible);
   }
 
   @override
   void dispose() {
+    _scrollController.removeListener(_scrollListener);
     _scrollController.dispose();
     super.dispose();
   }
@@ -44,18 +54,17 @@ class _FeedState extends ConsumerState<Feed> {
     }
 
     return Scaffold(
-      body: NotificationListener<ScrollNotification>(
-        onNotification: (scrollNotification) {
-          if (scrollNotification is ScrollUpdateNotification) {
-            setState(() {
-              _isAppBarVisible = _scrollController.position.pixels < 100;
-            });
-          }
-          return true;
-        },
-        child: SafeArea(
-          top:
-              _isAppBarVisible, // Conditionally render SafeArea based on AppBar visibility
+      body: SafeArea(
+        top:
+            !_isAppBarVisible, // Conditionally render SafeArea based on AppBar visibility
+        child: NotificationListener<ScrollNotification>(
+          onNotification: (scrollNotification) {
+            if (scrollNotification is ScrollUpdateNotification ||
+                scrollNotification is ScrollEndNotification) {
+              _scrollListener();
+            }
+            return false;
+          },
           child: CustomScrollView(
             controller: _scrollController,
             slivers: [
@@ -255,3 +264,7 @@ class _FeedState extends ConsumerState<Feed> {
     );
   }
 }
+
+
+// Above code copied from GPT but result is same as previous code... 
+// need to understand what the goal is with the state managmenent here and how gpt is deciding to render the top of SafeArea 
