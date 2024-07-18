@@ -15,6 +15,7 @@ class Feed extends ConsumerStatefulWidget {
 
 class _FeedState extends ConsumerState<Feed> {
   final ScrollController _scrollController = ScrollController();
+  double _previousScrollPosition = 0;
   bool _isAppBarVisible = true;
 
   @override
@@ -23,16 +24,24 @@ class _FeedState extends ConsumerState<Feed> {
     _scrollController.addListener(_scrollListener);
   }
 
+  // scrollPositionTracker
+
   void _scrollListener() {
     final currentPosition = _scrollController.position.pixels;
     final isAtTop = currentPosition <= 0;
     final isAppBarVisible = currentPosition < 100;
+    print("Current position: $currentPosition");
+    print("Previous position: $_previousScrollPosition");
 
-    if (_isAppBarVisible != isAppBarVisible || isAtTop) {
+    if (_isAppBarVisible != isAppBarVisible ||
+        isAtTop ||
+        _previousScrollPosition > currentPosition) {
       setState(() {
         _isAppBarVisible = isAppBarVisible;
       });
     }
+
+    _previousScrollPosition = currentPosition;
     print(_isAppBarVisible);
   }
 
