@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:snowpack/main.dart';
 import 'package:snowpack/models/aspect.dart';
@@ -18,6 +17,7 @@ class _FeedState extends ConsumerState<Feed> {
   final ScrollController _scrollController = ScrollController();
   double _previousScrollPosition = 0;
   bool _isAppBarVisible = true;
+  bool scrollingUp = false;
 
   @override
   void initState() {
@@ -45,6 +45,12 @@ class _FeedState extends ConsumerState<Feed> {
     print("isAppBarVisible: $isAppBarVisible");
 
     print("this is silly: ${_previousScrollPosition > currentPosition}");
+
+    if (_previousScrollPosition > currentPosition) {
+      setState(() {
+        scrollingUp = true;
+      });
+    }
 
     if (_isAppBarVisible != isAppBarVisible || isAtTop) {
       setState(() {
