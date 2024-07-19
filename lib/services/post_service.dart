@@ -68,27 +68,36 @@ class PostService extends StateNotifier<List<Post>> {
     }
   }
 
+  Future<List<Post>> getPostsWithCurrentFilters() async => getPosts(
+      elevation: _currentElevationFilter,
+      aspect: _currentAspectFilter,
+      temperature: _currentTemperatureFilter);
+
   void setElevationFilter(int elevation) {
     _currentElevationFilter = elevation;
     // Optionally, you might want to fetch posts with the new elevation filter here
-    getPosts(elevation: elevation).then((posts) => state = posts);
+    getPostsWithCurrentFilters().then((posts) => state = posts);
   }
 
   void setAspectFilter(Aspect aspect) {
     _currentAspectFilter = aspect;
-    getPosts(aspect: aspect).then((posts) => state = posts);
+    getPostsWithCurrentFilters().then((posts) => state = posts);
   }
 
   void setTemperatureFilter(int temperature) {
     _currentTemperatureFilter = temperature;
-    getPosts(temperature: temperature).then((posts) => state = posts);
+    getPostsWithCurrentFilters().then((posts) => state = posts);
+  }
+
+  Future<void> refreshFeed() async {
+    getPostsWithCurrentFilters().then((posts) => state = posts);
   }
 
   void clearFilters() {
     _currentElevationFilter = null;
     _currentAspectFilter = null;
     _currentTemperatureFilter = null;
-    getPosts().then((posts) => state = posts);
+    getPostsWithCurrentFilters().then((posts) => state = posts);
   }
 
   Future<void> createPost(Post post) async {
