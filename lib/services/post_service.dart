@@ -84,6 +84,10 @@ class PostService extends StateNotifier<List<Post>> {
     getPosts(temperature: temperature).then((posts) => state = posts);
   }
 
+  Future<void> refreshFeed() async {
+    getPosts().then((posts) => state = posts);
+  }
+
   void clearFilters() {
     _currentElevationFilter = null;
     _currentAspectFilter = null;

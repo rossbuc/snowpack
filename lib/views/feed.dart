@@ -97,7 +97,7 @@ class _FeedState extends ConsumerState<Feed> {
             _buildSliverAppBar(
                 context, colorScheme, settingsPressed, postService),
             CupertinoSliverRefreshControl(
-              onRefresh: () => postService.getPosts(),
+              onRefresh: () => postService.refreshFeed(),
             ),
             const PostList(),
           ],
