@@ -16,8 +16,9 @@ class Feed extends ConsumerStatefulWidget {
 class _FeedState extends ConsumerState<Feed> {
   final ScrollController _scrollController = ScrollController();
   double _previousScrollPosition = 0;
+  double _scrollDownStartPosition = 0;
   bool _isAppBarVisible = true;
-  bool scrollingUp = false;
+  bool _holdSafeArea = false;
 
   @override
   void initState() {
@@ -25,47 +26,50 @@ class _FeedState extends ConsumerState<Feed> {
     _scrollController.addListener(_scrollListener);
   }
 
-  // scrollPositionTracker
-
   void _scrollListener() {
-    /* 
-    Create variables for scroll position, if the scroll position is at the top of the view
-    and if the scroll position os greater or less than the appBarHeight plus SafeArea padding 
-    */
     final currentPosition = _scrollController.position.pixels;
-    final isAtTop = currentPosition <= 0;
     final safePadding = MediaQuery.of(context).padding.top;
     final appBarHeight = AppBar().preferredSize.height;
     final appBarHeightPlusStatusBarHeight = appBarHeight + safePadding;
-    print("appBarHeightPlusStatusBarHeight: $appBarHeightPlusStatusBarHeight");
-    final isAppBarVisible = currentPosition < appBarHeightPlusStatusBarHeight ||
-        _previousScrollPosition > currentPosition;
-    print("Current position: $currentPosition");
-    print("Previous position: $_previousScrollPosition");
-    print("isAppBarVisible: $isAppBarVisible");
 
-    print("this is silly: ${_previousScrollPosition > currentPosition}");
+    final isScrollingUp = _previousScrollPosition > currentPosition;
+    final isScrollingDown = _previousScrollPosition < currentPosition;
 
-    if (_previousScrollPosition > currentPosition) {
-      setState(() {
-        scrollingUp = true;
-      });
+    // When starting to scroll up, record the start position
+    if (isScrollingUp) {
+      _scrollDownStartPosition = currentPosition;
     }
 
-    if (_isAppBarVisible != isAppBarVisible || isAtTop) {
+    // Calculate if the AppBar should be visible
+    final isAppBarVisible =
+        currentPosition < appBarHeightPlusStatusBarHeight || isScrollingUp;
+
+    // Determine if we should hold off rendering the SafeArea
+    if (isScrollingDown && currentPosition > appBarHeightPlusStatusBarHeight) {
+      if (currentPosition - _scrollDownStartPosition > appBarHeight) {
+        setState(() {
+          _holdSafeArea = false;
+        });
+      } else {
+        setState(() {
+          _holdSafeArea = true;
+        });
+      }
+    }
+
+    // Update the AppBar visibility if it has changed
+    if (_isAppBarVisible != isAppBarVisible) {
       setState(() {
         _isAppBarVisible = isAppBarVisible;
       });
     }
 
     _previousScrollPosition = currentPosition;
-    print(_isAppBarVisible);
+
+    print("holdSafeArea: $_holdSafeArea");
+    print("isAppBarVisible: $_isAppBarVisible");
   }
 
-  /* 
-  Dispose method called when widget is removed from tree or rebuilt with different key
-  In this context it is called when navigating away from the feed for example
-  */
   @override
   void dispose() {
     _scrollController.removeListener(_scrollListener);
@@ -85,23 +89,14 @@ class _FeedState extends ConsumerState<Feed> {
 
     return Scaffold(
       body: SafeArea(
-        top:
-            !_isAppBarVisible, // Conditionally render SafeArea based on AppBar visibility
-        child: NotificationListener<ScrollNotification>(
-          onNotification: (scrollNotification) {
-            if (scrollNotification is ScrollUpdateNotification) {
-              // _scrollListener();
-            }
-            return false;
-          },
-          child: CustomScrollView(
-            controller: _scrollController,
-            slivers: [
-              _buildSliverAppBar(
-                  context, colorScheme, settingsPressed, postService),
-              const PostList(),
-            ],
-          ),
+        top: !_isAppBarVisible && !_holdSafeArea,
+        child: CustomScrollView(
+          controller: _scrollController,
+          slivers: [
+            _buildSliverAppBar(
+                context, colorScheme, settingsPressed, postService),
+            const PostList(),
+          ],
         ),
       ),
     );
@@ -293,6 +288,3 @@ class _FeedState extends ConsumerState<Feed> {
     );
   }
 }
-
-// Above code copied from GPT but result is same as previous code...
-// need to understand what the goal is with the state managmenent here and how gpt is deciding to render the top of SafeArea
