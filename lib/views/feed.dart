@@ -91,10 +91,14 @@ class _FeedState extends ConsumerState<Feed> {
       body: SafeArea(
         top: !_isAppBarVisible && !_holdSafeArea,
         child: CustomScrollView(
+          physics: const BouncingScrollPhysics(),
           controller: _scrollController,
           slivers: [
             _buildSliverAppBar(
                 context, colorScheme, settingsPressed, postService),
+            CupertinoSliverRefreshControl(
+              onRefresh: () => postService.getPosts(),
+            ),
             const PostList(),
           ],
         ),
