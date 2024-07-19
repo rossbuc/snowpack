@@ -28,23 +28,25 @@ class _FeedState extends ConsumerState<Feed> {
   // scrollPositionTracker
 
   void _scrollListener() {
+    /* 
+    Create variables for scroll position, if the scroll position is at the top of the view
+    and if the scroll position os greater or less than the appBarHeight plus SafeArea padding 
+    */
     final currentPosition = _scrollController.position.pixels;
     final isAtTop = currentPosition <= 0;
-    print(AppBar().preferredSize.height);
     final safePadding = MediaQuery.of(context).padding.top;
     final appBarHeight = AppBar().preferredSize.height;
     final appBarHeightPlusStatusBarHeight = appBarHeight + safePadding;
-    print("safePadding: $safePadding");
-    print("appBarHeight: $appBarHeight");
     print("appBarHeightPlusStatusBarHeight: $appBarHeightPlusStatusBarHeight");
-    final isAppBarVisible = currentPosition < appBarHeightPlusStatusBarHeight;
+    final isAppBarVisible = currentPosition < appBarHeightPlusStatusBarHeight ||
+        _previousScrollPosition > currentPosition;
     print("Current position: $currentPosition");
     print("Previous position: $_previousScrollPosition");
     print("isAppBarVisible: $isAppBarVisible");
 
-    if (_isAppBarVisible != isAppBarVisible ||
-        isAtTop ||
-        _previousScrollPosition > currentPosition) {
+    print("this is silly: ${_previousScrollPosition > currentPosition}");
+
+    if (_isAppBarVisible != isAppBarVisible || isAtTop) {
       setState(() {
         _isAppBarVisible = isAppBarVisible;
       });
@@ -54,6 +56,10 @@ class _FeedState extends ConsumerState<Feed> {
     print(_isAppBarVisible);
   }
 
+  /* 
+  Dispose method called when widget is removed from tree or rebuilt with different key
+  In this context it is called when navigating away from the feed for example
+  */
   @override
   void dispose() {
     _scrollController.removeListener(_scrollListener);
@@ -77,9 +83,8 @@ class _FeedState extends ConsumerState<Feed> {
             !_isAppBarVisible, // Conditionally render SafeArea based on AppBar visibility
         child: NotificationListener<ScrollNotification>(
           onNotification: (scrollNotification) {
-            if (scrollNotification is ScrollUpdateNotification ||
-                scrollNotification is ScrollEndNotification) {
-              _scrollListener();
+            if (scrollNotification is ScrollUpdateNotification) {
+              // _scrollListener();
             }
             return false;
           },
@@ -283,6 +288,5 @@ class _FeedState extends ConsumerState<Feed> {
   }
 }
 
-
-// Above code copied from GPT but result is same as previous code... 
-// need to understand what the goal is with the state managmenent here and how gpt is deciding to render the top of SafeArea 
+// Above code copied from GPT but result is same as previous code...
+// need to understand what the goal is with the state managmenent here and how gpt is deciding to render the top of SafeArea
