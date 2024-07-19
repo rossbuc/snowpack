@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:snowpack/main.dart';
 import 'package:snowpack/models/aspect.dart';
@@ -29,9 +30,17 @@ class _FeedState extends ConsumerState<Feed> {
   void _scrollListener() {
     final currentPosition = _scrollController.position.pixels;
     final isAtTop = currentPosition <= 0;
-    final isAppBarVisible = currentPosition < 100;
+    print(AppBar().preferredSize.height);
+    final safePadding = MediaQuery.of(context).padding.top;
+    final appBarHeight = AppBar().preferredSize.height;
+    final appBarHeightPlusStatusBarHeight = appBarHeight + safePadding;
+    print("safePadding: $safePadding");
+    print("appBarHeight: $appBarHeight");
+    print("appBarHeightPlusStatusBarHeight: $appBarHeightPlusStatusBarHeight");
+    final isAppBarVisible = currentPosition < appBarHeightPlusStatusBarHeight;
     print("Current position: $currentPosition");
     print("Previous position: $_previousScrollPosition");
+    print("isAppBarVisible: $isAppBarVisible");
 
     if (_isAppBarVisible != isAppBarVisible ||
         isAtTop ||
