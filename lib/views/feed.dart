@@ -5,6 +5,8 @@ import 'package:snowpack/main.dart';
 import 'package:snowpack/models/aspect.dart';
 import 'package:snowpack/services/post_service.dart';
 import 'package:snowpack/views/post_list.dart';
+import 'package:snowpack/widgets/settings_button.dart';
+import 'package:snowpack/widgets/sort_button.dart';
 import 'package:snowpack/widgets/elevation_dropdown.dart';
 import 'package:snowpack/widgets/temperature_dropdown.dart';
 
@@ -123,8 +125,8 @@ class _FeedState extends ConsumerState<Feed> {
       elevation: 4.0,
       leading: LogoButton(context, colorScheme),
       actions: [
-        SettingsButton(settingsPressed),
-        SortButton(postService),
+        SettingsButton(settingsPressed: settingsPressed),
+        SortButton(postService: postService),
       ],
     );
   }
@@ -150,38 +152,6 @@ class _FeedState extends ConsumerState<Feed> {
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  Padding SettingsButton(void Function() settingsPressed) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: IconButton(
-        icon: const Icon(CupertinoIcons.gear_alt),
-        onPressed: settingsPressed,
-      ),
-    );
-  }
-
-  Padding SortButton(PostService postService) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8),
-      child: PopupMenuButton<String>(
-        icon: const Icon(CupertinoIcons.line_horizontal_3),
-        onSelected: (String result) {
-          postService.sortPosts(result);
-        },
-        itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-          const PopupMenuItem<String>(
-            value: 'time',
-            child: Text('Sort by Time'),
-          ),
-          const PopupMenuItem<String>(
-            value: 'location',
-            child: Text('Sort by Location'),
-          ),
-        ],
       ),
     );
   }
