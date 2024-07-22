@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:snowpack/main.dart';
 import 'package:snowpack/models/aspect.dart';
@@ -74,6 +75,9 @@ class PostCreate extends ConsumerWidget {
                   if (value == null || value.isEmpty) {
                     return 'Please enter the elevation';
                   }
+                  if (int.tryParse(value) == null) {
+                    return 'Please enter a valid number';
+                  }
                   return null;
                 },
                 onChanged: (value) {
@@ -104,14 +108,20 @@ class PostCreate extends ConsumerWidget {
                 },
               ),
               const SizedBox(height: 16),
-              TextFormField(
+              DropdownButtonFormField(
                 decoration: const InputDecoration(
                   labelText: "Temperature",
                   prefixIcon: Icon(CupertinoIcons.thermometer_snowflake),
                 ),
-                keyboardType: TextInputType.number,
+                items: List.generate(
+                  200,
+                  (index) => DropdownMenuItem(
+                    value: index - 100,
+                    child: Text("${index - 100}°C"),
+                  ),
+                ),
                 validator: (value) {
-                  if (value == null || value.isEmpty) {
+                  if (value == null) {
                     return 'Please enter the temperature';
                   }
                   return null;
@@ -150,7 +160,7 @@ class PostCreate extends ConsumerWidget {
                       description: postForm.description!,
                       elevation: int.parse(postForm.elevation!),
                       aspect: postForm.aspect!,
-                      temperature: int.parse(postForm.temperature!),
+                      temperature: postForm.temperature!,
                       userId: 1,
                     );
                     postService.createPost(post);

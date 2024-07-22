@@ -6,13 +6,13 @@ class PostFormProvider with ChangeNotifier {
   String? _description;
   String? _elevation;
   Aspect? _aspect;
-  String? _temperature;
+  int? _temperature;
 
   String? get title => _title;
   String? get description => _description;
   String? get elevation => _elevation;
   Aspect? get aspect => _aspect;
-  String? get temperature => _temperature;
+  int? get temperature => _temperature;
 
   void setTitle(String? title) {
     _title = title;
@@ -34,7 +34,7 @@ class PostFormProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void setTemperature(String? temperature) {
+  void setTemperature(int? temperature) {
     _temperature = temperature;
     notifyListeners();
   }
