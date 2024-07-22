@@ -5,6 +5,7 @@ import 'package:snowpack/main.dart';
 import 'package:snowpack/models/aspect.dart';
 import 'package:snowpack/services/post_service.dart';
 import 'package:snowpack/views/post_list.dart';
+import 'package:snowpack/widgets/logo_button.dart';
 import 'package:snowpack/widgets/settings_button.dart';
 import 'package:snowpack/widgets/sort_button.dart';
 import 'package:snowpack/widgets/elevation_dropdown.dart';
@@ -123,41 +124,12 @@ class _FeedState extends ConsumerState<Feed> {
         ),
       ),
       elevation: 4.0,
-      leading: LogoButton(context, colorScheme),
+      leading: LogoButton(context: context, colorScheme: colorScheme),
       actions: [
         SettingsButton(settingsPressed: settingsPressed),
         SortButton(postService: postService),
       ],
     );
-  }
-
-  Padding LogoButton(BuildContext context, ColorScheme colorScheme) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 20.0, right: 4.0, bottom: 4),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(16),
-        child: InkWell(
-          borderRadius: BorderRadius.circular(16),
-          splashColor: colorScheme.secondary.withOpacity(0.5),
-          onTap: _onLogoTap,
-          child: SizedBox(
-            width: 50,
-            height: 50,
-            child: Align(
-              alignment: Alignment.center,
-              child: Image.asset(
-                "assets/images/SnowPack Logo Symbol.png",
-                fit: BoxFit.contain,
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  void _onLogoTap() {
-    print("Logo Pressed");
   }
 
   void FilterMenu(BuildContext context, PostService postService) {
