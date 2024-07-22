@@ -101,7 +101,7 @@ class PostTile extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Text(post.temperature.toString()),
+                      Text("${post.temperature.toString()} °C"),
                     ],
                   ),
                 ],
