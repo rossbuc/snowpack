@@ -34,7 +34,7 @@ class PostCreate extends ConsumerWidget {
               TextFormField(
                 decoration: const InputDecoration(
                   labelText: "Title",
-                  prefixIcon: Icon(Icons.title),
+                  prefixIcon: Icon(CupertinoIcons.textformat),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -50,7 +50,7 @@ class PostCreate extends ConsumerWidget {
               TextFormField(
                 decoration: const InputDecoration(
                   labelText: "Description",
-                  prefixIcon: Icon(Icons.description),
+                  prefixIcon: Icon(CupertinoIcons.text_alignleft),
                 ),
                 maxLines: 3,
                 validator: (value) {
@@ -67,7 +67,7 @@ class PostCreate extends ConsumerWidget {
               TextFormField(
                 decoration: const InputDecoration(
                   labelText: "Elevation",
-                  prefixIcon: Icon(Icons.terrain),
+                  prefixIcon: Icon(CupertinoIcons.up_arrow),
                 ),
                 keyboardType: TextInputType.number,
                 validator: (value) {
@@ -85,7 +85,7 @@ class PostCreate extends ConsumerWidget {
                 value: postForm.aspect,
                 decoration: const InputDecoration(
                   labelText: 'Aspect',
-                  prefixIcon: Icon(Icons.wb_sunny),
+                  prefixIcon: Icon(CupertinoIcons.compass),
                 ),
                 items: Aspect.values.map((Aspect aspect) {
                   return DropdownMenuItem<Aspect>(
@@ -107,7 +107,7 @@ class PostCreate extends ConsumerWidget {
               TextFormField(
                 decoration: const InputDecoration(
                   labelText: "Temperature",
-                  prefixIcon: Icon(Icons.thermostat),
+                  prefixIcon: Icon(CupertinoIcons.thermometer_snowflake),
                 ),
                 keyboardType: TextInputType.number,
                 validator: (value) {

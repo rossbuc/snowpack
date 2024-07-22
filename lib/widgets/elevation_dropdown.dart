@@ -25,7 +25,7 @@ class ElevationDropdown extends StatelessWidget {
         110,
         (index) => DropdownMenuItem<int>(
           value: index * 100,
-          child: Text('${index * 100} ft'),
+          child: Text('${index * 100} m'),
         ),
       ),
     );

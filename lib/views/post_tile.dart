@@ -89,7 +89,7 @@ class PostTile extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Text(post.elevation.toString()),
+                      Text("${post.elevation.toString()} m"),
                     ],
                   ),
                   Column(
