@@ -5,6 +5,7 @@ import 'package:snowpack/main.dart';
 import 'package:snowpack/models/aspect.dart';
 import 'package:snowpack/services/post_service.dart';
 import 'package:snowpack/views/post_list.dart';
+import 'package:snowpack/widgets/temperature_dropdown.dart';
 
 class Feed extends ConsumerStatefulWidget {
   const Feed({Key? key}) : super(key: key);
@@ -84,7 +85,7 @@ class _FeedState extends ConsumerState<Feed> {
 
     void settingsPressed() {
       print("Settings Pressed");
-      _showFilterMenu(context, postService);
+      FilterMenu(context, postService);
     }
 
     return Scaffold(
@@ -94,8 +95,7 @@ class _FeedState extends ConsumerState<Feed> {
           physics: const BouncingScrollPhysics(),
           controller: _scrollController,
           slivers: [
-            _buildSliverAppBar(
-                context, colorScheme, settingsPressed, postService),
+            HomePageAppBar(context, colorScheme, settingsPressed, postService),
             CupertinoSliverRefreshControl(
               onRefresh: () => postService.refreshFeed(),
             ),
@@ -106,7 +106,7 @@ class _FeedState extends ConsumerState<Feed> {
     );
   }
 
-  SliverAppBar _buildSliverAppBar(BuildContext context, ColorScheme colorScheme,
+  SliverAppBar HomePageAppBar(BuildContext context, ColorScheme colorScheme,
       void Function() settingsPressed, PostService postService) {
     return SliverAppBar(
       floating: true,
@@ -120,15 +120,15 @@ class _FeedState extends ConsumerState<Feed> {
         ),
       ),
       elevation: 4.0,
-      leading: _buildLogoButton(context, colorScheme),
+      leading: LogoButton(context, colorScheme),
       actions: [
-        _buildSettingsButton(settingsPressed),
-        _buildSortButton(postService),
+        SettingsButton(settingsPressed),
+        SortButton(postService),
       ],
     );
   }
 
-  Padding _buildLogoButton(BuildContext context, ColorScheme colorScheme) {
+  Padding LogoButton(BuildContext context, ColorScheme colorScheme) {
     return Padding(
       padding: const EdgeInsets.only(left: 20.0, right: 4.0, bottom: 4),
       child: ClipRRect(
@@ -153,7 +153,7 @@ class _FeedState extends ConsumerState<Feed> {
     );
   }
 
-  Padding _buildSettingsButton(void Function() settingsPressed) {
+  Padding SettingsButton(void Function() settingsPressed) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: IconButton(
@@ -163,7 +163,7 @@ class _FeedState extends ConsumerState<Feed> {
     );
   }
 
-  Padding _buildSortButton(PostService postService) {
+  Padding SortButton(PostService postService) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: PopupMenuButton<String>(
@@ -189,7 +189,7 @@ class _FeedState extends ConsumerState<Feed> {
     print("Logo Pressed");
   }
 
-  void _showFilterMenu(BuildContext context, PostService postService) {
+  void FilterMenu(BuildContext context, PostService postService) {
     final initialElevationValue = postService.currentElevationFilter ?? 0;
     final initialAspectValue = postService.currentAspectFilter;
     final initialTemperatureValue = postService.currentTemperatureFilter ?? 0;
@@ -204,11 +204,13 @@ class _FeedState extends ConsumerState<Feed> {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              _buildElevationDropdown(postService, initialElevationValue),
+              ElevationDropdown(postService, initialElevationValue),
               SizedBox(height: 20),
-              _buildAspectDropdown(postService, aspects, initialAspectValue),
+              AspectDropDown(postService, aspects, initialAspectValue),
               SizedBox(height: 20),
-              _buildTemperatureDropdown(postService, initialTemperatureValue),
+              TemperatureDropdown(
+                  postService: postService,
+                  initialTemperatureValue: initialTemperatureValue),
             ],
           ),
           actions: <Widget>[
@@ -231,7 +233,7 @@ class _FeedState extends ConsumerState<Feed> {
     );
   }
 
-  DropdownButton<int> _buildElevationDropdown(
+  DropdownButton<int> ElevationDropdown(
       PostService postService, int initialElevationValue) {
     return DropdownButton<int>(
       value: initialElevationValue,
@@ -251,7 +253,7 @@ class _FeedState extends ConsumerState<Feed> {
     );
   }
 
-  DropdownButton<Aspect> _buildAspectDropdown(PostService postService,
+  DropdownButton<Aspect> AspectDropDown(PostService postService,
       List<Aspect> aspects, Aspect? initialAspectValue) {
     return DropdownButton<Aspect>(
       hint: Text('Select Aspect'),
@@ -268,27 +270,6 @@ class _FeedState extends ConsumerState<Feed> {
           child: Text(aspect.toString().split('.').last),
         );
       }).toList(),
-    );
-  }
-
-  DropdownButton<int> _buildTemperatureDropdown(
-      PostService postService, int initialTemperatureValue) {
-    return DropdownButton<int>(
-      hint: Text("Select Temperature Range"),
-      value: initialTemperatureValue,
-      onChanged: (value) {
-        if (value != null) {
-          postService.setTemperatureFilter(value);
-          print("Selected Temperature: $value degrees");
-        }
-      },
-      items: List.generate(
-        10,
-        (index) => DropdownMenuItem<int>(
-          value: (index - 5) * 5,
-          child: Text('${(index - 5) * 5} degrees'),
-        ),
-      ),
     );
   }
 }
