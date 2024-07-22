@@ -5,6 +5,7 @@ import 'package:snowpack/main.dart';
 import 'package:snowpack/models/aspect.dart';
 import 'package:snowpack/services/post_service.dart';
 import 'package:snowpack/views/post_list.dart';
+import 'package:snowpack/widgets/elevation_dropdown.dart';
 import 'package:snowpack/widgets/temperature_dropdown.dart';
 
 class Feed extends ConsumerStatefulWidget {
@@ -204,9 +205,11 @@ class _FeedState extends ConsumerState<Feed> {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              ElevationDropdown(postService, initialElevationValue),
+              ElevationDropdown(
+                  postService: postService,
+                  initialElevationValue: initialElevationValue),
               SizedBox(height: 20),
-              AspectDropDown(postService, aspects, initialAspectValue),
+              AspectDropdown(postService, aspects, initialAspectValue),
               SizedBox(height: 20),
               TemperatureDropdown(
                   postService: postService,
@@ -233,27 +236,7 @@ class _FeedState extends ConsumerState<Feed> {
     );
   }
 
-  DropdownButton<int> ElevationDropdown(
-      PostService postService, int initialElevationValue) {
-    return DropdownButton<int>(
-      value: initialElevationValue,
-      onChanged: (value) {
-        if (value != null) {
-          postService.setElevationFilter(value);
-          print("Selected Elevation: $value ft");
-        }
-      },
-      items: List.generate(
-        110,
-        (index) => DropdownMenuItem<int>(
-          value: index * 100,
-          child: Text('${index * 100} ft'),
-        ),
-      ),
-    );
-  }
-
-  DropdownButton<Aspect> AspectDropDown(PostService postService,
+  DropdownButton<Aspect> AspectDropdown(PostService postService,
       List<Aspect> aspects, Aspect? initialAspectValue) {
     return DropdownButton<Aspect>(
       hint: Text('Select Aspect'),
