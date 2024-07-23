@@ -121,10 +121,10 @@ class PostCreate extends ConsumerWidget {
                     prefixIcon: Icon(CupertinoIcons.thermometer_snowflake),
                   ),
                   items: List.generate(
-                    200,
+                    100,
                     (index) => DropdownMenuItem(
-                      value: index - 100,
-                      child: Text("${index - 100}°C"),
+                      value: index - 50,
+                      child: Text("${index - 50}°C"),
                     ),
                   ),
                   validator: (value) {
