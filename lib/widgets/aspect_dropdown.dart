@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:snowpack/models/aspect.dart';
 import 'package:snowpack/services/post_service.dart';
+import 'package:snowpack/widgets/home_page_app_bar.dart';
 
-class AspectDropdown extends StatelessWidget {
+class AspectDropdown extends ConsumerWidget {
   final PostService postService;
   final List<Aspect> aspects;
   final Aspect? initialAspectValue;
@@ -15,13 +17,15 @@ class AspectDropdown extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    var postFilters = ref.watch(postFilterProvider);
     return DropdownButton<Aspect>(
       hint: Text('Select Aspect'),
       value: initialAspectValue,
       onChanged: (value) {
         if (value != null) {
-          postService.setAspectFilter(value);
+          ref.read(postFilterProvider.notifier).setAspectFilter(value);
+          postService.getPostsWithCurrentFilters(postFilters);
           print("Selected Aspect: ${value.toString().split('.').last}");
         }
       },

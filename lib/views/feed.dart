@@ -79,7 +79,8 @@ class _FeedState extends ConsumerState<Feed> {
   @override
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
-    final postService = ref.read(postServiceProvider.notifier);
+    final postService = ref.watch(postServiceProvider.notifier);
+    final postFilter = ref.watch(postFilterProvider);
 
     return Scaffold(
       body: SafeArea(
@@ -93,7 +94,7 @@ class _FeedState extends ConsumerState<Feed> {
                 colorScheme: colorScheme,
                 postService: postService),
             CupertinoSliverRefreshControl(
-              onRefresh: () => postService.refreshFeed(),
+              onRefresh: () => postService.refreshFeed(postFilter),
             ),
             const PostList(),
           ],

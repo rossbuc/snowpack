@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:snowpack/models/aspect.dart';
+import 'package:snowpack/models/post_filter.dart';
+import 'package:snowpack/providers/post_filter_notifier.dart';
 import 'package:snowpack/services/post_service.dart';
 import 'package:snowpack/widgets/aspect_dropdown.dart';
 import 'package:snowpack/widgets/elevation_dropdown.dart';
@@ -8,7 +11,18 @@ import 'package:snowpack/widgets/settings_button.dart';
 import 'package:snowpack/widgets/sort_button.dart';
 import 'package:snowpack/widgets/temperature_dropdown.dart';
 
-class HomePageAppBar extends StatelessWidget {
+final postFilterProvider =
+    StateNotifierProvider<PostFilterNotifier, PostFilter>(
+  (ref) => PostFilterNotifier(
+    postFilters: PostFilter(
+      elevationFilter: 0,
+      aspectFilter: null,
+      temperatureFilter: 0,
+    ),
+  ),
+);
+
+class HomePageAppBar extends ConsumerWidget {
   const HomePageAppBar({
     super.key,
     required this.context,
@@ -21,11 +35,10 @@ class HomePageAppBar extends StatelessWidget {
   final PostService postService;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     void _showFilterMenu(BuildContext context, PostService postService) {
-      final initialElevationValue = postService.currentElevationFilter ?? 0;
-      final initialAspectValue = postService.currentAspectFilter;
-      final initialTemperatureValue = postService.currentTemperatureFilter ?? 0;
+      var postFilters = ref.watch(postFilterProvider);
+      var postFilterNotifier = ref.read(postFilterProvider.notifier);
 
       const aspects = Aspect.values;
 
@@ -39,16 +52,17 @@ class HomePageAppBar extends StatelessWidget {
               children: [
                 ElevationDropdown(
                     postService: postService,
-                    initialElevationValue: initialElevationValue),
+                    initialElevationValue: postFilters.elevationFilter ?? 0),
                 SizedBox(height: 20),
                 AspectDropdown(
                     postService: postService,
                     aspects: aspects,
-                    initialAspectValue: initialAspectValue),
+                    initialAspectValue: postFilters.aspectFilter),
                 SizedBox(height: 20),
                 TemperatureDropdown(
                     postService: postService,
-                    initialTemperatureValue: initialTemperatureValue),
+                    initialTemperatureValue:
+                        postFilters.temperatureFilter ?? 0),
               ],
             ),
             actions: <Widget>[
@@ -60,7 +74,7 @@ class HomePageAppBar extends StatelessWidget {
               ),
               TextButton(
                 onPressed: () {
-                  postService.clearFilters();
+                  postFilterNotifier.clearFilters();
                   Navigator.of(context).pop();
                 },
                 child: const Text("Reset"),
