@@ -7,13 +7,11 @@ import 'package:snowpack/widgets/home_page_app_bar.dart';
 class AspectDropdown extends ConsumerWidget {
   final PostService postService;
   final List<Aspect> aspects;
-  final Aspect? initialAspectValue;
 
   const AspectDropdown({
     super.key,
     required this.postService,
     required this.aspects,
-    required this.initialAspectValue,
   });
 
   @override
@@ -21,7 +19,7 @@ class AspectDropdown extends ConsumerWidget {
     var postFilters = ref.watch(postFilterProvider);
     return DropdownButton<Aspect>(
       hint: Text('Select Aspect'),
-      value: initialAspectValue,
+      value: postFilters.aspectFilter,
       onChanged: (value) {
         if (value != null) {
           ref.read(postFilterProvider.notifier).setAspectFilter(value);

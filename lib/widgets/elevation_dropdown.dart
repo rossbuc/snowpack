@@ -7,17 +7,15 @@ class ElevationDropdown extends ConsumerWidget {
   const ElevationDropdown({
     super.key,
     required this.postService,
-    required this.initialElevationValue,
   });
 
   final PostService postService;
-  final int initialElevationValue;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final postFilters = ref.watch(postFilterProvider);
     return DropdownButton<int>(
-      value: initialElevationValue,
+      value: postFilters.elevationFilter,
       onChanged: (value) {
         if (value != null) {
           ref.read(postFilterProvider.notifier).setElevationFilter(value);

@@ -7,18 +7,16 @@ class TemperatureDropdown extends ConsumerWidget {
   const TemperatureDropdown({
     super.key,
     required this.postService,
-    required this.initialTemperatureValue,
   });
 
   final PostService postService;
-  final int initialTemperatureValue;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var postFilters = ref.watch(postFilterProvider);
     return DropdownButton<int>(
       hint: Text("Select Temperature Range"),
-      value: initialTemperatureValue,
+      value: postFilters.temperatureFilter,
       onChanged: (value) {
         if (value != null) {
           ref.read(postFilterProvider.notifier).setTemperatureFilter(value);

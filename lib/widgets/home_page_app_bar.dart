@@ -51,18 +51,17 @@ class HomePageAppBar extends ConsumerWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 ElevationDropdown(
-                    postService: postService,
-                    initialElevationValue: postFilters.elevationFilter ?? 0),
+                  postService: postService,
+                ),
                 SizedBox(height: 20),
                 AspectDropdown(
-                    postService: postService,
-                    aspects: aspects,
-                    initialAspectValue: postFilters.aspectFilter),
+                  postService: postService,
+                  aspects: aspects,
+                ),
                 SizedBox(height: 20),
                 TemperatureDropdown(
-                    postService: postService,
-                    initialTemperatureValue:
-                        postFilters.temperatureFilter ?? 0),
+                  postService: postService,
+                ),
               ],
             ),
             actions: <Widget>[
