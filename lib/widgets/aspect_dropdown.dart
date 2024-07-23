@@ -20,9 +20,9 @@ class AspectDropdown extends ConsumerWidget {
     return DropdownButton<Aspect>(
       hint: Text('Select Aspect'),
       value: postFilters.aspectFilter,
-      onChanged: (value) {
+      onChanged: (value) async {
         if (value != null) {
-          ref.read(postFilterProvider.notifier).setAspectFilter(value);
+          await ref.read(postFilterProvider.notifier).setAspectFilter(value);
           postService.getPostsWithCurrentFilters(postFilters);
           print("Selected Aspect: ${value.toString().split('.').last}");
         }

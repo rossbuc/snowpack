@@ -10,8 +10,9 @@ class PostFilterNotifier extends StateNotifier<PostFilter> {
     // Optionally, you might want to fetch posts with the new elevation filter here
   }
 
-  void setAspectFilter(Aspect aspect) {
+  Future<bool> setAspectFilter(Aspect aspect) {
     state = state.copyWith(aspectFilter: aspect);
+    return Future.value(true);
   }
 
   void setTemperatureFilter(int temperature) {
@@ -20,6 +21,6 @@ class PostFilterNotifier extends StateNotifier<PostFilter> {
 
   void clearFilters() {
     state = state.copyWith(
-        elevationFilter: null, aspectFilter: null, temperatureFilter: null);
+        elevationFilter: 0, aspectFilter: null, temperatureFilter: 0);
   }
 }
