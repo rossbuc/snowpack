@@ -30,7 +30,6 @@ class PostFilterNotifier extends StateNotifier<PostFilter> {
   }
 
   void clearFilters() {
-    state = state.copyWith(
-        elevationFilter: 0, aspectFilter: null, temperatureFilter: 0);
+    state = state.reset();
   }
 }

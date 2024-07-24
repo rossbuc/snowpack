@@ -14,8 +14,16 @@ class PostFilter {
   }) {
     return PostFilter(
       elevationFilter: elevationFilter ?? this.elevationFilter,
-      aspectFilter: aspectFilter,
+      aspectFilter: aspectFilter ?? this.aspectFilter,
       temperatureFilter: temperatureFilter ?? this.temperatureFilter,
+    );
+  }
+
+  PostFilter reset() {
+    return PostFilter(
+      elevationFilter: 0,
+      aspectFilter: null,
+      temperatureFilter: 0,
     );
   }
 }
