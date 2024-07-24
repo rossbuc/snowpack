@@ -5,7 +5,6 @@ import 'package:http/http.dart' as http;
 import 'package:snowpack/models/aspect.dart';
 import 'package:snowpack/models/post.dart';
 import 'package:snowpack/models/post_filter.dart';
-import 'package:snowpack/widgets/home_page_app_bar.dart';
 
 class PostService extends StateNotifier<List<Post>> {
   PostService(super.state) {
@@ -39,7 +38,7 @@ class PostService extends StateNotifier<List<Post>> {
 
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body) as List;
-        print("Data received: $data");
+        // print("Data received: $data");
         List<Post> posts = data.map((json) {
           try {
             return Post.fromJson(json);

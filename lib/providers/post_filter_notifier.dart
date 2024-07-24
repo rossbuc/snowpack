@@ -2,6 +2,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:snowpack/models/aspect.dart';
 import 'package:snowpack/models/post_filter.dart';
 
+final postFilterProvider =
+    StateNotifierProvider<PostFilterNotifier, PostFilter>(
+  (ref) => PostFilterNotifier(
+    postFilters: PostFilter(
+      elevationFilter: 0,
+      aspectFilter: null,
+      temperatureFilter: 0,
+    ),
+  ),
+);
+
 class PostFilterNotifier extends StateNotifier<PostFilter> {
   PostFilterNotifier({postFilters}) : super(postFilters);
 
@@ -10,9 +21,8 @@ class PostFilterNotifier extends StateNotifier<PostFilter> {
     // Optionally, you might want to fetch posts with the new elevation filter here
   }
 
-  Future<bool> setAspectFilter(Aspect aspect) {
+  void setAspectFilter(Aspect aspect) {
     state = state.copyWith(aspectFilter: aspect);
-    return Future.value(true);
   }
 
   void setTemperatureFilter(int temperature) {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:snowpack/services/post_service.dart';
-import 'package:snowpack/widgets/home_page_app_bar.dart';
+import 'package:snowpack/providers/post_filter_notifier.dart';
 
 class TemperatureDropdown extends ConsumerWidget {
   const TemperatureDropdown({

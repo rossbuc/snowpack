@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:snowpack/main.dart';
 import 'package:snowpack/views/post_list.dart';
 import 'package:snowpack/widgets/home_page_app_bar.dart';
+import 'package:snowpack/providers/post_filter_notifier.dart';
 
 class Feed extends ConsumerStatefulWidget {
   const Feed({Key? key}) : super(key: key);

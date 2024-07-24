@@ -11,17 +11,6 @@ import 'package:snowpack/widgets/settings_button.dart';
 import 'package:snowpack/widgets/sort_button.dart';
 import 'package:snowpack/widgets/temperature_dropdown.dart';
 
-final postFilterProvider =
-    StateNotifierProvider<PostFilterNotifier, PostFilter>(
-  (ref) => PostFilterNotifier(
-    postFilters: PostFilter(
-      elevationFilter: 0,
-      aspectFilter: null,
-      temperatureFilter: 0,
-    ),
-  ),
-);
-
 class HomePageAppBar extends ConsumerWidget {
   const HomePageAppBar({
     super.key,

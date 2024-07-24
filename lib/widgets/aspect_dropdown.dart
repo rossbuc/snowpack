@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:snowpack/models/aspect.dart';
 import 'package:snowpack/services/post_service.dart';
-import 'package:snowpack/widgets/home_page_app_bar.dart';
+import 'package:snowpack/providers/post_filter_notifier.dart';
 
 class AspectDropdown extends ConsumerWidget {
   final PostService postService;
@@ -21,9 +21,9 @@ class AspectDropdown extends ConsumerWidget {
     return DropdownButton<Aspect>(
       hint: Text('Select Aspect'),
       value: postFilters.aspectFilter,
-      onChanged: (value) async {
+      onChanged: (value) {
         if (value != null) {
-          await ref.read(postFilterProvider.notifier).setAspectFilter(value);
+          ref.read(postFilterProvider.notifier).setAspectFilter(value);
           print("Selected Aspect: ${value.toString().split('.').last}");
         }
       },
