@@ -14,13 +14,13 @@ class ElevationDropdown extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final postFilters = ref.watch(postFilterProvider);
+    postService.getPostsWithCurrentFilters(postFilters);
     return DropdownButton<int>(
       value: postFilters.elevationFilter,
       onChanged: (value) {
         if (value != null) {
           ref.read(postFilterProvider.notifier).setElevationFilter(value);
-          postService.getPostsWithCurrentFilters(postFilters);
-          print("Selected Elevation: $value ft");
+          print("Selected Elevation: $value m");
         }
       },
       items: List.generate(

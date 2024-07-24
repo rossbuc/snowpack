@@ -14,13 +14,13 @@ class TemperatureDropdown extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var postFilters = ref.watch(postFilterProvider);
+    postService.getPostsWithCurrentFilters(postFilters);
     return DropdownButton<int>(
       hint: Text("Select Temperature Range"),
       value: postFilters.temperatureFilter,
       onChanged: (value) {
         if (value != null) {
           ref.read(postFilterProvider.notifier).setTemperatureFilter(value);
-          postService.getPostsWithCurrentFilters(postFilters);
           print("Selected Temperature: $value degrees");
         }
       },
