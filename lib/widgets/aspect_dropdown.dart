@@ -17,13 +17,13 @@ class AspectDropdown extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var postFilters = ref.watch(postFilterProvider);
+    postService.getPostsWithCurrentFilters(postFilters);
     return DropdownButton<Aspect>(
       hint: Text('Select Aspect'),
       value: postFilters.aspectFilter,
       onChanged: (value) async {
         if (value != null) {
           await ref.read(postFilterProvider.notifier).setAspectFilter(value);
-          postService.getPostsWithCurrentFilters(postFilters);
           print("Selected Aspect: ${value.toString().split('.').last}");
         }
       },
