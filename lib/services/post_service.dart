@@ -4,23 +4,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:snowpack/models/aspect.dart';
 import 'package:snowpack/models/post.dart';
+import 'package:snowpack/models/post_filter.dart';
+import 'package:snowpack/providers/post_filter_notifier.dart';
 
 class PostService extends StateNotifier<List<Post>> {
   PostService(super.state) {
     getPosts().then((posts) => state = posts);
   }
-
-  int? _currentElevationFilter;
-
-  int? get currentElevationFilter => _currentElevationFilter;
-
-  Aspect? _currentAspectFilter;
-
-  Aspect? get currentAspectFilter => _currentAspectFilter;
-
-  int? _currentTemperatureFilter;
-
-  int? get currentTemperatureFilter => _currentTemperatureFilter;
 
   Future<List<Post>> getPosts(
       {String? sortBy,
@@ -49,7 +39,7 @@ class PostService extends StateNotifier<List<Post>> {
 
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body) as List;
-        print("Data received: $data");
+        // print("Data received: $data");
         List<Post> posts = data.map((json) {
           try {
             return Post.fromJson(json);
@@ -68,36 +58,15 @@ class PostService extends StateNotifier<List<Post>> {
     }
   }
 
-  Future<List<Post>> getPostsWithCurrentFilters() async => getPosts(
-      elevation: _currentElevationFilter,
-      aspect: _currentAspectFilter,
-      temperature: _currentTemperatureFilter);
+  Future<List<Post>> getPostsWithCurrentFilters(PostFilter postFilter) async =>
+      getPosts(
+        elevation: postFilter.elevationFilter,
+        aspect: postFilter.aspectFilter,
+        temperature: postFilter.temperatureFilter,
+      ).then((posts) => state = posts);
 
-  void setElevationFilter(int elevation) {
-    _currentElevationFilter = elevation;
-    // Optionally, you might want to fetch posts with the new elevation filter here
-    getPostsWithCurrentFilters().then((posts) => state = posts);
-  }
-
-  void setAspectFilter(Aspect aspect) {
-    _currentAspectFilter = aspect;
-    getPostsWithCurrentFilters().then((posts) => state = posts);
-  }
-
-  void setTemperatureFilter(int temperature) {
-    _currentTemperatureFilter = temperature;
-    getPostsWithCurrentFilters().then((posts) => state = posts);
-  }
-
-  Future<void> refreshFeed() async {
-    getPostsWithCurrentFilters().then((posts) => state = posts);
-  }
-
-  void clearFilters() {
-    _currentElevationFilter = null;
-    _currentAspectFilter = null;
-    _currentTemperatureFilter = null;
-    getPostsWithCurrentFilters().then((posts) => state = posts);
+  Future<void> refreshFeed(PostFilter postFilter) async {
+    getPostsWithCurrentFilters(postFilter).then((posts) => state = posts);
   }
 
   Future<void> createPost(Post post) async {
