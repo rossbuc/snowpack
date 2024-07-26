@@ -21,9 +21,9 @@ class PostFilter {
 
   PostFilter reset() {
     return PostFilter(
-      elevationFilter: 0,
+      elevationFilter: null,
       aspectFilter: null,
-      temperatureFilter: 0,
+      temperatureFilter: null,
     );
   }
 }

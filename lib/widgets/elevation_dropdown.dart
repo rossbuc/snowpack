@@ -16,6 +16,7 @@ class ElevationDropdown extends ConsumerWidget {
     final postFilters = ref.watch(postFilterProvider);
     postService.getPostsWithCurrentFilters(postFilters);
     return DropdownButton<int>(
+      hint: const Text("Select Elevation"),
       value: postFilters.elevationFilter,
       onChanged: (value) {
         if (value != null) {

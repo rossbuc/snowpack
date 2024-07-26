@@ -65,9 +65,6 @@ class _FeedState extends ConsumerState<Feed> {
     }
 
     _previousScrollPosition = currentPosition;
-
-    print("holdSafeArea: $_holdSafeArea");
-    print("isAppBarVisible: $_isAppBarVisible");
   }
 
   @override

@@ -5,7 +5,6 @@ import 'package:http/http.dart' as http;
 import 'package:snowpack/models/aspect.dart';
 import 'package:snowpack/models/post.dart';
 import 'package:snowpack/models/post_filter.dart';
-import 'package:snowpack/providers/post_filter_notifier.dart';
 
 class PostService extends StateNotifier<List<Post>> {
   PostService(super.state) {

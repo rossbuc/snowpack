@@ -6,9 +6,9 @@ final postFilterProvider =
     StateNotifierProvider<PostFilterNotifier, PostFilter>(
   (ref) => PostFilterNotifier(
     postFilters: PostFilter(
-      elevationFilter: 0,
+      elevationFilter: null,
       aspectFilter: null,
-      temperatureFilter: 0,
+      temperatureFilter: null,
     ),
   ),
 );

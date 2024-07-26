@@ -16,7 +16,7 @@ class TemperatureDropdown extends ConsumerWidget {
     var postFilters = ref.watch(postFilterProvider);
     postService.getPostsWithCurrentFilters(postFilters);
     return DropdownButton<int>(
-      hint: Text("Select Temperature Range"),
+      hint: const Text("Select Temperature"),
       value: postFilters.temperatureFilter,
       onChanged: (value) {
         if (value != null) {

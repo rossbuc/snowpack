@@ -25,7 +25,6 @@ class HomePageAppBar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     void _showFilterMenu(BuildContext context, PostService postService) {
-      var postFilters = ref.watch(postFilterProvider);
       var postFilterNotifier = ref.read(postFilterProvider.notifier);
 
       const aspects = Aspect.values;
