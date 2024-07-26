@@ -13,7 +13,6 @@ class PostList extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final posts = ref.watch(postServiceProvider);
     final userService = ref.read(userServiceProvider.notifier);
-    print("This is the list of posts: $posts");
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         childCount: posts.length,

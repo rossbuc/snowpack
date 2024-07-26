@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:snowpack/main.dart';
 import 'package:snowpack/views/post_list.dart';
 import 'package:snowpack/widgets/home_page_app_bar.dart';
+import 'package:snowpack/providers/post_filter_notifier.dart';
 
 class Feed extends ConsumerStatefulWidget {
   const Feed({Key? key}) : super(key: key);
@@ -64,9 +65,6 @@ class _FeedState extends ConsumerState<Feed> {
     }
 
     _previousScrollPosition = currentPosition;
-
-    print("holdSafeArea: $_holdSafeArea");
-    print("isAppBarVisible: $_isAppBarVisible");
   }
 
   @override
@@ -79,7 +77,8 @@ class _FeedState extends ConsumerState<Feed> {
   @override
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
-    final postService = ref.read(postServiceProvider.notifier);
+    final postService = ref.watch(postServiceProvider.notifier);
+    final postFilter = ref.watch(postFilterProvider);
 
     return Scaffold(
       body: SafeArea(
@@ -93,7 +92,7 @@ class _FeedState extends ConsumerState<Feed> {
                 colorScheme: colorScheme,
                 postService: postService),
             CupertinoSliverRefreshControl(
-              onRefresh: () => postService.refreshFeed(),
+              onRefresh: () => postService.refreshFeed(postFilter),
             ),
             const PostList(),
           ],

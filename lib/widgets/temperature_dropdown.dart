@@ -1,24 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:snowpack/services/post_service.dart';
+import 'package:snowpack/providers/post_filter_notifier.dart';
 
-class TemperatureDropdown extends StatelessWidget {
+class TemperatureDropdown extends ConsumerWidget {
   const TemperatureDropdown({
     super.key,
     required this.postService,
-    required this.initialTemperatureValue,
   });
 
   final PostService postService;
-  final int initialTemperatureValue;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    var postFilters = ref.watch(postFilterProvider);
+    postService.getPostsWithCurrentFilters(postFilters);
     return DropdownButton<int>(
-      hint: Text("Select Temperature Range"),
-      value: initialTemperatureValue,
+      hint: const Text("Select Temperature"),
+      value: postFilters.temperatureFilter,
       onChanged: (value) {
         if (value != null) {
-          postService.setTemperatureFilter(value);
+          ref.read(postFilterProvider.notifier).setTemperatureFilter(value);
           print("Selected Temperature: $value degrees");
         }
       },

@@ -13,9 +13,9 @@ class SortButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8),
+      padding: const EdgeInsets.only(left: 4, right: 12),
       child: PopupMenuButton<String>(
-        icon: const Icon(CupertinoIcons.line_horizontal_3),
+        icon: const Icon(CupertinoIcons.sort_down),
         onSelected: (String result) {
           postService.sortPosts(result);
         },
