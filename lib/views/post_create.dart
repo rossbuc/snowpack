@@ -6,6 +6,8 @@ import 'package:snowpack/main.dart';
 import 'package:snowpack/models/aspect.dart';
 import 'package:snowpack/models/post.dart';
 import 'package:snowpack/providers/post_form_provider.dart';
+import 'package:snowpack/views/feed.dart';
+import 'package:snowpack/views/post_display.dart';
 
 class PostCreate extends ConsumerWidget {
   PostCreate({super.key});
@@ -154,7 +156,7 @@ class PostCreate extends ConsumerWidget {
                       "Post",
                       style: TextStyle(color: colorScheme.onPrimary),
                     ),
-                    onPressed: () {
+                    onPressed: () async {
                       if (!_formKey.currentState!.validate()) {
                         return;
                       }
@@ -174,6 +176,21 @@ class PostCreate extends ConsumerWidget {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text("Post created: ${post.title}")),
                       );
+                      final result = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PostDisplay(post: post),
+                        ),
+                      );
+
+                      if (result == 'navigateToFeed') {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Feed(),
+                          ),
+                        );
+                      }
                     },
                   ),
                 ),
