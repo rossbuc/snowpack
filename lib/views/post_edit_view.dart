@@ -5,14 +5,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:snowpack/main.dart';
 import 'package:snowpack/models/aspect.dart';
 import 'package:snowpack/models/post.dart';
+import 'package:snowpack/models/user.dart';
 import 'package:snowpack/providers/post_form_provider.dart';
 import 'package:snowpack/views/feed.dart';
 import 'package:snowpack/views/post_display.dart';
 
-class PostEdit extends ConsumerWidget {
+class PostEditView extends ConsumerWidget {
   final Post post;
+  final User user;
 
-  PostEdit({super.key, required this.post});
+  PostEditView({super.key, required this.post, required this.user});
 
   final _formKey = GlobalKey<FormState>();
   final postFormProvider = ChangeNotifierProvider((ref) => PostFormProvider());

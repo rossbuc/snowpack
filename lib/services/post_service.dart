@@ -112,4 +112,38 @@ class PostService extends StateNotifier<List<Post>> {
       // Add your sorting logic here
     }
   }
+
+  Future<void> updatePost(Post updatedPost) async {
+    final url =
+        Uri.http(dotenv.env['IP_ADDRESS']!, "/posts/${updatedPost.id}/edit");
+
+    String aspect = updatedPost.aspect.toString().split('.').last;
+
+    print("trying to update this post: updatedPost: $updatedPost");
+    print("using this url to update: $url");
+
+    final Map<String, dynamic> requestBody = {
+      'xcoordinate': updatedPost.xcoordinate,
+      'ycoordinate': updatedPost.ycoordinate,
+      'dateTime': updatedPost.dateTime.toIso8601String(),
+      'title': updatedPost.title,
+      'description': updatedPost.description,
+      'elevation': updatedPost.elevation,
+      'aspect': aspect,
+      'temperature': updatedPost.temperature,
+      'user': {'id': updatedPost.userId},
+    };
+
+    final response = await http.put(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8'
+        },
+        body: jsonEncode(requestBody));
+    if (response.statusCode == 200) {
+      print('Post updated successfully');
+    } else {
+      print('Failed to update post: ${response.statusCode}');
+      throw Exception('Failed to update post: ${response.statusCode}');
+    }
+  }
 }
