@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:snowpack/models/post.dart';
 import 'package:snowpack/models/user.dart';
+import 'package:snowpack/views/post_edit_view.dart';
 
 class PostInfoScreen extends StatelessWidget {
   final Post post;
@@ -122,22 +123,6 @@ class PostInfoScreen extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-}
-
-class PostEditView extends StatelessWidget {
-  final Post post;
-  final User user;
-  const PostEditView({required this.post, required this.user});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Edit Post"),
-      ),
-      body: Text("Edit Post: ${post.title}"),
     );
   }
 }
