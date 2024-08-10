@@ -80,6 +80,7 @@ class Post {
   }
 
   Post copyWith({
+    int? id,
     int? xcoordinate,
     int? ycoordinate,
     DateTime? dateTime,

@@ -113,9 +113,8 @@ class PostService extends StateNotifier<List<Post>> {
     }
   }
 
-  Future<void> updatePost(Post updatedPost) async {
-    final url =
-        Uri.http(dotenv.env['IP_ADDRESS']!, "/posts/${updatedPost.id}/edit");
+  Future<void> updatePost(int id, Post updatedPost) async {
+    final url = Uri.http(dotenv.env['IP_ADDRESS']!, "/posts/${id}/edit");
 
     String aspect = updatedPost.aspect.toString().split('.').last;
 

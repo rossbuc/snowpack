@@ -185,7 +185,8 @@ class PostEditView extends ConsumerWidget {
                       );
 
                       // Call update method from post service
-                      postService.updatePost(updatedPost);
+                      final int postId = post.id ?? 0;
+                      postService.updatePost(postId, updatedPost);
 
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
