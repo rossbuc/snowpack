@@ -78,4 +78,28 @@ class Post {
       'userId': userId,
     };
   }
+
+  Post copyWith({
+    int? xcoordinate,
+    int? ycoordinate,
+    DateTime? dateTime,
+    String? title,
+    String? description,
+    int? elevation,
+    Aspect? aspect,
+    int? temperature,
+    int? userId,
+  }) {
+    return Post(
+      xcoordinate: xcoordinate ?? this.xcoordinate,
+      ycoordinate: ycoordinate ?? this.ycoordinate,
+      dateTime: dateTime ?? this.dateTime,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      elevation: elevation ?? this.elevation,
+      aspect: aspect ?? this.aspect,
+      temperature: temperature ?? this.temperature,
+      userId: userId ?? this.userId,
+    );
+  }
 }

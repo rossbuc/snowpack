@@ -1,5 +1,5 @@
 class User {
-  final int id;
+  final int? id;
   final String username;
   final String password;
   final String email;
@@ -8,7 +8,7 @@ class User {
   final List<int> followingIds;
 
   User({
-    required this.id,
+    this.id,
     required this.username,
     required this.password,
     required this.email,
@@ -71,6 +71,24 @@ class User {
       postIds: postIds,
       followerIds: followers,
       followingIds: following,
+    );
+  }
+
+  User copyWith({
+    String? username,
+    String? password,
+    String? email,
+    List<int>? postIds,
+    List<int>? followerIds,
+    List<int>? followingIds,
+  }) {
+    return User(
+      username: username ?? this.username,
+      password: password ?? this.password,
+      email: email ?? this.email,
+      postIds: postIds ?? this.postIds,
+      followerIds: followerIds ?? this.followerIds,
+      followingIds: followingIds ?? this.followingIds,
     );
   }
 }
