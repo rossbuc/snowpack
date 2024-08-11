@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:snowpack/models/aspect.dart';
+
+final postFormProvider = ChangeNotifierProvider((ref) => PostFormProvider());
 
 class PostFormProvider with ChangeNotifier {
   String? _title;

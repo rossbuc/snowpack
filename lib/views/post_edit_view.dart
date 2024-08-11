@@ -10,28 +10,41 @@ import 'package:snowpack/providers/post_form_provider.dart';
 import 'package:snowpack/views/feed.dart';
 import 'package:snowpack/views/post_display.dart';
 
-class PostEditView extends ConsumerWidget {
+class PostEditView extends ConsumerStatefulWidget {
   final Post post;
   final User user;
 
-  PostEditView({super.key, required this.post, required this.user});
-
-  final _formKey = GlobalKey<FormState>();
-  final postFormProvider = ChangeNotifierProvider((ref) => PostFormProvider());
+  const PostEditView({super.key, required this.post, required this.user});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  _PostEditViewState createState() => _PostEditViewState();
+}
+
+class _PostEditViewState extends ConsumerState<PostEditView> {
+  final _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Initialize form values with existing post data
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final postFormNotifier = ref.read(postFormProvider.notifier);
+
+      postFormNotifier.setTitle(widget.post.title);
+      postFormNotifier.setDescription(widget.post.description);
+      postFormNotifier.setElevation(widget.post.elevation.toString());
+      postFormNotifier.setAspect(widget.post.aspect);
+      postFormNotifier.setTemperature(widget.post.temperature);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final postForm = ref.watch(postFormProvider);
     final postFormNotifier = ref.read(postFormProvider.notifier);
     final colorScheme = Theme.of(context).colorScheme;
     final postService = ref.read(postServiceProvider.notifier);
-
-    // Initialize form values with existing post data
-    postFormNotifier.setTitle(post.title);
-    postFormNotifier.setDescription(post.description);
-    postFormNotifier.setElevation(post.elevation.toString());
-    postFormNotifier.setAspect(post.aspect);
-    postFormNotifier.setTemperature(post.temperature);
 
     return Scaffold(
       appBar: AppBar(
@@ -48,7 +61,7 @@ class PostEditView extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 TextFormField(
-                  initialValue: post.title,
+                  initialValue: postForm.title,
                   decoration: const InputDecoration(
                     labelText: "Title",
                     prefixIcon: Icon(CupertinoIcons.textformat),
@@ -65,7 +78,7 @@ class PostEditView extends ConsumerWidget {
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
-                  initialValue: post.description,
+                  initialValue: postForm.description,
                   decoration: const InputDecoration(
                     labelText: "Description",
                     prefixIcon: Icon(CupertinoIcons.text_alignleft),
@@ -83,7 +96,7 @@ class PostEditView extends ConsumerWidget {
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
-                  initialValue: post.elevation.toString(),
+                  initialValue: postForm.elevation,
                   decoration: const InputDecoration(
                     labelText: "Elevation",
                     prefixIcon: Icon(CupertinoIcons.up_arrow),
@@ -176,7 +189,7 @@ class PostEditView extends ConsumerWidget {
                       }
 
                       // Create a new post object with updated values
-                      final updatedPost = post.copyWith(
+                      final updatedPost = widget.post.copyWith(
                         title: postForm.title!,
                         description: postForm.description!,
                         elevation: int.parse(postForm.elevation!),
@@ -185,7 +198,7 @@ class PostEditView extends ConsumerWidget {
                       );
 
                       // Call update method from post service
-                      final int postId = post.id ?? 0;
+                      final int postId = widget.post.id ?? 0;
                       postService.updatePost(postId, updatedPost);
 
                       ScaffoldMessenger.of(context).showSnackBar(

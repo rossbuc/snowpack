@@ -13,7 +13,6 @@ class PostCreate extends ConsumerWidget {
   PostCreate({super.key});
 
   final _formKey = GlobalKey<FormState>();
-  final postFormProvider = ChangeNotifierProvider((ref) => PostFormProvider());
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
