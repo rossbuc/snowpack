@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:snowpack/models/post.dart';
 import 'package:snowpack/models/user.dart';
 import 'package:snowpack/views/post_edit_view.dart';
+import 'package:snowpack/widgets/map_view.dart';
 
 class PostInfoScreen extends StatelessWidget {
   final Post post;
@@ -119,6 +122,11 @@ class PostInfoScreen extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 8),
+            SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height * 0.5,
+              child: const MapView(),
+            ),
             Text(post.description),
           ],
         ),
