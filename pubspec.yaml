@@ -38,6 +38,8 @@ dependencies:
   flutter_riverpod: ^2.5.1
   collection: ^1.18.0
   flutter_dotenv: ^5.0.2
+  flutter_map: ^7.0.2
+  latlong2: ^0.9.1
 
 dev_dependencies:
   flutter_test:
