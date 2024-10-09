@@ -4,7 +4,7 @@ import 'package:snowpack/models/post.dart';
 class PostDisplay extends StatelessWidget {
   final Post post;
 
-  const PostDisplay({Key? key, required this.post}) : super(key: key);
+  const PostDisplay({super.key, required this.post});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +13,7 @@ class PostDisplay extends StatelessWidget {
         title: Text(post.title),
         centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context, 'navigateToFeed');
           },
@@ -26,15 +26,15 @@ class PostDisplay extends StatelessWidget {
           children: [
             Text(
               post.title,
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Text(post.description),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Text('Elevation: ${post.elevation} m'),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Text('Aspect: ${post.aspect.toString().split('.').last}'),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Text('Temperature: ${post.temperature}°C'),
           ],
         ),

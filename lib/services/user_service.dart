@@ -23,7 +23,7 @@ class UserService extends StateNotifier<List<User>> {
             return User.fromJson(json);
           } catch (e) {
             print("Error parsing user: $e, data: $json");
-            throw e;
+            rethrow;
           }
         }).toList();
         return users;

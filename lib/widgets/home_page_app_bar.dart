@@ -24,7 +24,7 @@ class HomePageAppBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    void _showFilterMenu(BuildContext context, PostService postService) {
+    void showFilterMenu(BuildContext context, PostService postService) {
       var postFilterNotifier = ref.read(postFilterProvider.notifier);
 
       const aspects = Aspect.values;
@@ -33,19 +33,19 @@ class HomePageAppBar extends ConsumerWidget {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Filter Posts'),
+            title: const Text('Filter Posts'),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 ElevationDropdown(
                   postService: postService,
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 AspectDropdown(
                   postService: postService,
                   aspects: aspects,
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 TemperatureDropdown(
                   postService: postService,
                 ),
@@ -73,7 +73,7 @@ class HomePageAppBar extends ConsumerWidget {
 
     void settingsPressed() {
       print("Settings Pressed");
-      _showFilterMenu(context, postService);
+      showFilterMenu(context, postService);
     }
 
     return SliverAppBar(

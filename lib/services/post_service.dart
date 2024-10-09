@@ -44,7 +44,7 @@ class PostService extends StateNotifier<List<Post>> {
             return Post.fromJson(json);
           } catch (e) {
             print("Error parsing post: $e, data: $json");
-            throw e;
+            rethrow;
           }
         }).toList();
         return posts;
@@ -114,7 +114,7 @@ class PostService extends StateNotifier<List<Post>> {
   }
 
   Future<void> updatePost(int id, Post updatedPost) async {
-    final url = Uri.http(dotenv.env['IP_ADDRESS']!, "/posts/${id}/edit");
+    final url = Uri.http(dotenv.env['IP_ADDRESS']!, "/posts/$id/edit");
 
     String aspect = updatedPost.aspect.toString().split('.').last;
 

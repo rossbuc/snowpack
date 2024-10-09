@@ -7,7 +7,7 @@ import 'package:snowpack/widgets/home_page_app_bar.dart';
 import 'package:snowpack/providers/post_filter_notifier.dart';
 
 class Feed extends ConsumerStatefulWidget {
-  const Feed({Key? key}) : super(key: key);
+  const Feed({super.key});
 
   @override
   _FeedState createState() => _FeedState();

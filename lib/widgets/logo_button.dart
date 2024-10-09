@@ -12,7 +12,7 @@ class LogoButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void _onLogoTap() {
+    void onLogoTap() {
       print("Logo Pressed");
     }
 
@@ -23,7 +23,7 @@ class LogoButton extends StatelessWidget {
         child: InkWell(
           borderRadius: BorderRadius.circular(16),
           splashColor: colorScheme.secondary.withOpacity(0.5),
-          onTap: _onLogoTap,
+          onTap: onLogoTap,
           child: SizedBox(
             width: 50,
             height: 50,

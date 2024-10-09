@@ -217,7 +217,7 @@ class _PostEditViewState extends ConsumerState<PostEditView> {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => Feed(),
+                            builder: (context) => const Feed(),
                           ),
                         );
                       }

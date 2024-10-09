@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class SearchScreen extends ConsumerWidget {
   final TextEditingController _controller = TextEditingController();
 
+  SearchScreen({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // final filteredItems = ref.watch(searchProvider);
@@ -19,7 +21,7 @@ class SearchScreen extends ConsumerWidget {
                 controller: _controller,
                 decoration: InputDecoration(
                   labelText: 'Search',
-                  prefixIcon: Icon(Icons.search),
+                  prefixIcon: const Icon(Icons.search),
                   border: UnderlineInputBorder(
                     borderSide: BorderSide(color: colorScheme.primary),
                   ),

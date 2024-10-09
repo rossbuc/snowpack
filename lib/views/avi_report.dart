@@ -19,7 +19,7 @@ class AviReport extends StatelessWidget {
           ),
         ),
         elevation: 4.0,
-        title: Text('Avalanche Report'),
+        title: const Text('Avalanche Report'),
         titleTextStyle: TextStyle(
             color: colorScheme.primary,
             fontSize: 20,
