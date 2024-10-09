@@ -122,6 +122,12 @@ class PostTile extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 8),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.width,
+                  child: MapView(),
+                ),
+                const SizedBox(height: 8),
                 Text(post.description),
               ],
             ),
